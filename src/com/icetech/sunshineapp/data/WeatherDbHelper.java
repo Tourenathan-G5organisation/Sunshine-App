@@ -12,7 +12,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
 	//if you change the Database Schema, you must increment the version
 	
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2; //we have 2 here because this is an update of the db
 	
 	public static final String DATABASE_NAME = "weather.db";
 	
@@ -33,21 +33,21 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
 						//id of the location entry associated with this weather data
 
-						WeatherEntry.COLUMN_LOC_KEY + " INTEGER NOT NULL, " +
+						WeatherEntry.COLUMN_LOC_KEY + " INTEGER NOT NULL, "  +
 
-						WeatherEntry.COLUMN_DATETEXT + " TEXT NOT NULL, " +
+						WeatherEntry.COLUMN_DATE + " INTEGER NOT NULL, "    +
 
-						WeatherEntry.COLUMN_SHORT_DESC + " TEXT NOT NULL, " +
+						WeatherEntry.COLUMN_SHORT_DESC + " TEXT NOT NULL, "  +
 
-						WeatherEntry.COLUMN_WEATHER_ID + " TEXT NOT NULL, " +
+						WeatherEntry.COLUMN_WEATHER_ID + " INTEGER NOT NULL, "  +
 
-						WeatherEntry.COLUMN_MIN_TEMP + " REAL NOT NULL, " +
-						WeatherEntry.COLUMN_MAX_TEMP + " REAL NOT NULL, " +
+						WeatherEntry.COLUMN_MIN_TEMP + " REAL NOT NULL, "    +
+						WeatherEntry.COLUMN_MAX_TEMP + " REAL NOT NULL, "    +
 
-						WeatherEntry.COLUMN_HUMIDITY + " REAL NOT NULL, " +
-						WeatherEntry.COLUMN_PRESSURE + " TEXT NOT NULL, " +
-						WeatherEntry.COLUMN_WIND_SPEED + " TEXT NOT NULL, " +
-						WeatherEntry.COLUMN_DEGREES + " TEXT NOT NULL, " +
+						WeatherEntry.COLUMN_HUMIDITY + " REAL NOT NULL, "    +
+						WeatherEntry.COLUMN_PRESSURE + " REAL NOT NULL, "    +
+						WeatherEntry.COLUMN_WIND_SPEED + " REAL NOT NULL, "  +
+						WeatherEntry.COLUMN_DEGREES + " REAL NOT NULL, "     +
 						
 						//Setup location Column as foreign key to the location table
 						
@@ -56,7 +56,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 						
 						//To ensure the application has just one weather entry per day, per location
 						//Its created unique constraint with replace
-						" UNIQUE (" + WeatherEntry.COLUMN_DATETEXT + ", " +
+						" UNIQUE (" + WeatherEntry.COLUMN_DATE + ", " +
 						WeatherEntry.COLUMN_LOC_KEY +  ") ON CONFLICT REPLACE);";
 		
 		

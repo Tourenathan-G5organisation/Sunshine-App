@@ -51,12 +51,12 @@ public class WeatherProvider extends ContentProvider {
 	private static final String sLocationSettingWithStartDateSelection =
 			WeatherContract.LocationEntry.TABLE_NAME +
 			"." + WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
-			WeatherContract.WeatherEntry.COLUMN_DATETEXT + " >= ?";
+			WeatherContract.WeatherEntry.COLUMN_DATE + " >= ?";
 
 	private static final String sLocationSettingWithDaySelection =
 			WeatherContract.LocationEntry.TABLE_NAME +
 			"." + WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
-			WeatherContract.WeatherEntry.COLUMN_DATETEXT + " = ?";
+			WeatherContract.WeatherEntry.COLUMN_DATE + " = ?";
 
 
 	private Cursor getWeatherByLocation(Uri uri, String[] projection, String sortOrder){
