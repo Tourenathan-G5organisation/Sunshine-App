@@ -152,10 +152,10 @@ public class WeatherProvider extends ContentProvider {
 			return WeatherContract.WeatherEntry.CONTENT_TYPE;
 
 		case LOCATION:
-			return WeatherContract.WeatherEntry.CONTENT_TYPE;
+			return WeatherContract.LocationEntry.CONTENT_TYPE;
 
 		case LOCATION_ID:
-			return WeatherContract.WeatherEntry.CONTENT_ITEM_TYPE;
+			return WeatherContract.LocationEntry.CONTENT_ITEM_TYPE;
 
 		default:
 			throw new UnsupportedOperationException("Unknown Uri " + uri);
@@ -192,6 +192,8 @@ public class WeatherProvider extends ContentProvider {
 			throw new UnsupportedOperationException("Unkwon Uri " + uri);
 		}
 		getContext().getContentResolver().notifyChange(uri, null);
+		db.close();
+
 		return returnUri;
 	}
 
@@ -210,6 +212,7 @@ public class WeatherProvider extends ContentProvider {
 		//what kind of request and query the database accordingly
 		Cursor retCursor = null;
 		Log.d(LOG_TAG, Integer.toString(sUriMatcher.match(uri)));
+
 		switch (sUriMatcher.match(uri)) {
 
 		//"weather/*/*"
@@ -267,6 +270,7 @@ public class WeatherProvider extends ContentProvider {
 		}
 		//This register a content observer to watch for changes that happens
 		//in this uri and any of its decerdent
+
 		retCursor.setNotificationUri(getContext().getContentResolver(), uri);
 
 		return retCursor;
@@ -326,12 +330,12 @@ public class WeatherProvider extends ContentProvider {
 
 		return matcher;
 	}
-	
+
 	//bulk insert value to the weather table
 	@Override
 	public int bulkInsert(Uri uri, ContentValues[] values) {
 		final SQLiteDatabase  db = mOpenHelper.getReadableDatabase(); 
-		
+
 		final int match = sUriMatcher.match(uri);
 		switch (match) {
 		case WEATHER:
@@ -355,6 +359,41 @@ public class WeatherProvider extends ContentProvider {
 		default:
 			return super.bulkInsert(uri, values);
 		}
-		
+
 	}
+
+
+
+	/*
+	//Adds a location to the location table if it does not exist
+	private long addLocation ( String locationSetting, String cityName,
+			double lat, double lon){
+		long locationId;
+
+		Cursor locationCursor = this.query(LocationEntry.CONTENT_URI,
+				null,
+				LocationEntry.COLUMN_CITY_NAME + " = " + cityName,
+				null,
+				null);
+		if (locationCursor.moveToFirst()) {
+			int locationIndex = locationCursor.getColumnIndex(WeatherContract.LocationEntry._ID);
+			locationId = locationCursor.getLong(locationIndex);
+
+		}
+		else{
+			//Now content provider is setup. Inserting is pretty easy
+			//First create a conten values object to hold data you wnat to insert
+			ContentValues content = new ContentValues();
+			content.put(LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
+			content.put(LocationEntry.COLUMN_CITY_NAME, cityName);
+			content.put(LocationEntry.COLUMN_COORD_LAT, lat);
+			content.put(LocationEntry.COLUMN_COORD_LONG, lon);
+
+
+		}
+		return 0;
+	}
+	
+	*/
+	
 }

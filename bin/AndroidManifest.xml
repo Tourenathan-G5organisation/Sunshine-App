@@ -45,7 +45,7 @@
             android:name="com.icetech.sunshineapp.data.WeatherProvider"
             android:authorities="com.icetech.sunshineapp.data"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="false" >
         </provider>
         
     </application>

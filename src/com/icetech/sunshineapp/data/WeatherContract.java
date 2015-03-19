@@ -2,6 +2,7 @@ package com.icetech.sunshineapp.data;
 
 import org.apache.http.entity.ByteArrayEntity;
 
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -13,7 +14,7 @@ public class WeatherContract {
 	//This should be unique. So its advisable to use the package name of your
 	//application, since its guarantee to be unique.
 	
-	public static final String CONTENT_AUTHORITY = "com.icetech.sunshineapp";
+	public static final String CONTENT_AUTHORITY = "com.icetech.sunshineapp.data";
 	
 	//USe the content Authority to create the name of all the URI, which
 	//will be used to access the content provider
