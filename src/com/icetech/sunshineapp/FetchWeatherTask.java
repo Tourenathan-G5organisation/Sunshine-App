@@ -5,13 +5,23 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.acl.Owner;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Vector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.icetech.sunshineapp.data.WeatherContract;
+import com.icetech.sunshineapp.data.WeatherContract.LocationEntry;
+import com.icetech.sunshineapp.data.WeatherContract.WeatherEntry;
+
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.test.UiThreadTest;
@@ -22,6 +32,11 @@ import android.util.Log;
 public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
 	private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+	Context mContext;
+	
+	public FetchWeatherTask(Context context){
+		mContext = context;
+	}
 	
 	String unitType; //this will determine which unit type to show the temperature (metric or Imperial)
 	String unitMetric;
@@ -139,6 +154,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 		}
 		
 		
+		
 		/* Now making the http request to get the weather data from OpenWeather */
 
 		//These two need to be declared outside the try/catch block so that
@@ -153,8 +169,10 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 				
 				String format = "json";
 				String unit = "metric";
-				int numDays = 7;		
-				//params[0] is the town name
+				int numDays = 14;	
+				
+				
+				String locationParam = params[0]; //params[0] is the town name
 				unitType = params[1]; //params[1] is the unit type prefered by the user
 				unitMetric = params[2];  //params[2] is the string constant for metric
 				unitImperial = params[3]; //params[3] is the string constant for imperial
@@ -170,7 +188,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 						final String DAYS_PARAM = "cnt";
 					
 						Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-											.appendQueryParameter(QUERY_PARAM, params[0])
+											.appendQueryParameter(QUERY_PARAM, locationParam)
 											.appendQueryParameter(FORMAT_PARAM, format)
 											.appendQueryParameter(UNITS_PARAM, unit)
 											.appendQueryParameter(DAYS_PARAM, Integer.toString(numDays)).build();
@@ -237,20 +255,128 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 					}
 				}
 				
-				try {
+				/*try {
 					
 					return getWeatherFromJson(forecastJsonStr, numDays);
+					
 				} catch (JSONException e) {
 					Log.e(LOG_TAG, e.getMessage(), e);
 					e.printStackTrace();
-				}
+				}*/
 		
+				//These are the names of the Json objects that need to be extracted
+				
+				//Location Information
+				final String OWM_CITY = "city";
+				final String OWM_CITY_NAME = "name";
+				final String OWM_COORD = "coord";
+				
+				//Location coordinates
+				final String OWM_LATITUDE = "lat";
+				final String OWM_LONGITUDE = "lon";
+				
+				//Weather information. Each day's forcast info is an element of the "list" array.
+				final String OWM_LIST = "list";
+				
+				final String OWM_DATETIME = "dt";
+				final String OWM_PRESSURE = "pressure";
+				final String OWM_HUMIDITY = "humidity";
+				final String OWM_WINDSPEED = "speed";
+				final String OWM_WIND_DIRECTION = "deg";				
+				
+				
+				//All temperatures are children of temp object
+				final String OWM_TEMPERATURE = "temp";
+				final String OWM_MAX = "max";
+				final String OWM_MIN = "min";
+				
+				final String OWM_WEATHER = "weather";
+				final String OWM_DESCRIPTION = "main";
+				final String OWM_WEATHER_ID = "id";
+				
+				try {
+					JSONObject forecastJson = new JSONObject(forecastJsonStr);
+					JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
+					JSONObject cityJson = forecastJson.getJSONObject(OWM_CITY);
+
+					String cityName = cityJson.getString(OWM_CITY_NAME);
+					cityName = cityName.toLowerCase();
+					
+					JSONObject cityCoord = cityJson.getJSONObject(OWM_COORD);
+					double cityLatitude = cityCoord.getDouble(OWM_LATITUDE);
+					double cityLongitude = cityCoord.getDouble(OWM_LONGITUDE);
+					
+					locationParam = locationParam.toLowerCase();
+
+					long locationId = addLocation(cityName, locationParam, cityLatitude, cityLongitude);
+					
+					Vector<ContentValues> cVVector = new Vector<ContentValues>();
+					
+					for (int i = 0; i < weatherArray.length(); i++) {
+						
+						//Get the Json object representing the day
+						JSONObject dayForecast = weatherArray.getJSONObject(i);
+						
+						long dateTime = dayForecast.getLong(OWM_DATETIME);
+						Date date = new Date(dateTime * 1000);//converting to milliseconds before changing
+						
+						Log.d(LOG_TAG, "Weather Date: " + WeatherContract.getDbDateString(date));
+						
+						double humidity = dayForecast.getDouble(OWM_HUMIDITY);
+						double pressure = dayForecast.getDouble(OWM_PRESSURE);
+						double windspeed = dayForecast.getDouble(OWM_WINDSPEED);
+						double windDirection = dayForecast.getDouble(OWM_WIND_DIRECTION);
+						
+						JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
+						double high = temperatureObject.getDouble(OWM_MAX);
+						double low = temperatureObject.getDouble(OWM_MIN);
+						
+						JSONObject weatherObject = dayForecast.getJSONArray(OWM_WEATHER).getJSONObject(0);
+						String description = weatherObject.getString(OWM_DESCRIPTION);
+						
+						int weatherId = weatherObject.getInt(OWM_WEATHER_ID);
+						 
+						
+						ContentValues weathervalues = new ContentValues();
+						
+						weathervalues.put(WeatherEntry.COLUMN_LOC_KEY, locationId);
+						weathervalues.put(WeatherEntry.COLUMN_DATE, WeatherContract.getDbDateString(date));
+						weathervalues.put(WeatherEntry.COLUMN_HUMIDITY, humidity);
+						weathervalues.put(WeatherEntry.COLUMN_PRESSURE, pressure);
+						weathervalues.put(WeatherEntry.COLUMN_WIND_SPEED, windspeed);
+						weathervalues.put(WeatherEntry.COLUMN_DEGREES, windDirection);
+						weathervalues.put(WeatherEntry.COLUMN_MAX_TEMP, high);
+						weathervalues.put(WeatherEntry.COLUMN_MIN_TEMP, low);
+						weathervalues.put(WeatherEntry.COLUMN_SHORT_DESC, description);
+						weathervalues.put(WeatherEntry.COLUMN_WEATHER_ID, weatherId);
+						
+						cVVector.add(weathervalues);
+					}
+					
+						if (cVVector.size() > 0) {
+							ContentValues[] cvArray = new ContentValues[cVVector.size()];
+							cVVector.toArray(cvArray);
+							mContext.getContentResolver().bulkInsert(WeatherContract.WeatherEntry.CONTENT_URI, cvArray);
+							
+							Log.d(LOG_TAG, "FetchweatherTask complete. " + cVVector.size() + " inserted");
+							
+						}
+						
+					
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				//this will only happend if there was an error getting or parsing the forecast
 		return null;
 	
 	}
 	
-	// This method is used to update the UI Thread with information obtained from doInBackground method
+	
+	
+	/*// This method is used to update the UI Thread with information obtained from doInBackground method
 		@Override
 		protected void onPostExecute(String[] result) {
 			if(result != null){
@@ -259,5 +385,46 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 			}
 			//super.onPostExecute(result);
 		}
-
+*/
+	
+	
+	/**
+	 * 
+	 * @param locationSetting
+	 * @param cityName
+	 * @param lat
+	 * @param lon
+	 * @return
+	 */
+	private long addLocation(String locationSetting, String cityName, double lat, double lon){
+		
+		Log.v(LOG_TAG, "inserting " + cityName + " with coord " + lat + ", " + lon);
+		
+		//First check if the location with city name exist in the db
+		Cursor cursor =  mContext.getContentResolver().query(WeatherContract.LocationEntry.CONTENT_URI, 
+				new String[]{LocationEntry._ID},
+				LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
+				new String[]{locationSetting}, 
+				null);
+		
+		if(cursor.moveToFirst()){
+			Log.v(LOG_TAG, "found it in the database");
+			int locationIndex = cursor.getColumnIndex(LocationEntry._ID);
+			return cursor.getLong(locationIndex);
+		}else{
+			Log.v(LOG_TAG, "Didn't find it in the database, inserting now!");
+			ContentValues locationValues = new ContentValues();
+			
+			locationValues.put(LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
+			locationValues.put(LocationEntry.COLUMN_CITY_NAME, cityName);
+			locationValues.put(LocationEntry.COLUMN_COORD_LAT, lat);
+			locationValues.put(LocationEntry.COLUMN_COORD_LONG, lon);
+			
+			Uri locationInsertUri = mContext.getContentResolver()
+					.insert(LocationEntry.CONTENT_URI, locationValues);
+			
+			return ContentUris.parseId(locationInsertUri);
+		}
+		
+	}
 }

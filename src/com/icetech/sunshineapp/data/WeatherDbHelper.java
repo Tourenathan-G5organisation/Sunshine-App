@@ -35,7 +35,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
 						WeatherEntry.COLUMN_LOC_KEY + " INTEGER NOT NULL, "  +
 
-						WeatherEntry.COLUMN_DATE + " INTEGER NOT NULL, "    +
+						WeatherEntry.COLUMN_DATE + " TEXT NOT NULL, "    +
 
 						WeatherEntry.COLUMN_SHORT_DESC + " TEXT NOT NULL, "  +
 

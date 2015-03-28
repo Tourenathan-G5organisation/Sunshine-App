@@ -1,5 +1,8 @@
 package com.icetech.sunshineapp.data;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.http.entity.ByteArrayEntity;
 
 import android.content.ContentResolver;
@@ -161,4 +164,19 @@ public static Uri buildLocatonUri(long id){
 
 	} //end of LocationEntry Inner class
 	
+	
+	public static final String DATE_FORMAT = "yyyyMMdd";
+	
+	/**
+	 *Convert the date to the format rquired by the DB
+	 * @param date The Input date
+	 * @return a DB friemdly representation of the date using the format define in DATE_FORMAT
+	 */
+	public static String getDbDateString (Date date) {
+		
+		//Because the API returns a unix (timestamp) measure in seconds
+		//it must be converted into millisecond in order to be  converted into a valid date
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+		return sdf.format(date);
+	}
 }

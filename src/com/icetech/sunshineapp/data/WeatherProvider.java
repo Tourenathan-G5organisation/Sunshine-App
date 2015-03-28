@@ -46,7 +46,7 @@ public class WeatherProvider extends ContentProvider {
 
 	private static final String sLocationSettingSelection = 
 			WeatherContract.LocationEntry.TABLE_NAME +
-			"." + WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + "= ? ";
+			"." + WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? ";
 
 	private static final String sLocationSettingWithStartDateSelection =
 			WeatherContract.LocationEntry.TABLE_NAME +
