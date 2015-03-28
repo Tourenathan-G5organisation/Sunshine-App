@@ -7,6 +7,7 @@ import org.apache.http.entity.ByteArrayEntity;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.net.ParseException;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -178,5 +179,15 @@ public static Uri buildLocatonUri(long id){
 		//it must be converted into millisecond in order to be  converted into a valid date
 		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 		return sdf.format(date);
+	}
+	
+	public static Date getDateFromDb(String dateString){
+		SimpleDateFormat dbDateFormat = new SimpleDateFormat();
+		try {
+			return dbDateFormat.parse(dateString);
+		} catch (java.text.ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
