@@ -197,12 +197,12 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 					((TextView) view).setText(Utility.formatTemperature(cursor.getDouble(columnIndex), isMetric));
 
 					return true;
-					
+
 				case COL_WEATHER_DATE:
 					String dateString = cursor.getString(columnIndex);
 					((TextView) view).setText(Utility.formatDate(dateString));
 					return true;
-					
+
 				default:
 					break;
 				}
@@ -216,15 +216,25 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View v, int position,
+			public void onItemClick(AdapterView<?> adapterView, View v, int position,
 					long id) {
-				/*String forecast = listData.getItem(position);
-				Toast.makeText(getActivity(), "Clicked item at position: " + Integer.toString(position) + "\n" + forecast   , Toast.LENGTH_LONG).show();
+				SimpleCursorAdapter adapter = (SimpleCursorAdapter) adapterView.getAdapter();
+				Cursor cursor = adapter.getCursor();
 
-				Intent intent = new Intent(getActivity(), DetailsActivity.class)
-				.putExtra(Intent.EXTRA_TEXT, forecast);
-				startActivity(intent);// start a new actitvity and passing it some data
-				 */			}
+				if(null != cursor && cursor.moveToPosition(position)){
+					boolean isMetric = Utility.isMetric(getActivity());
+					String forecast = String.format("%s - %s - %s/%s", 
+							Utility.formatDate(cursor.getString(COL_WEATHER_DATE)),
+							cursor.getString(COL_WEATHER_SHORT_DESC),
+							Utility.formatTemperature(cursor.getDouble(COL_WEATHER_MAX_TEMP), isMetric),
+							Utility.formatTemperature(cursor.getDouble(COL_WEATHER_MIN_TEMP), isMetric));
+
+					Intent intent = new Intent(getActivity(), DetailsActivity.class)
+					.putExtra(Intent.EXTRA_TEXT, forecast);
+					startActivity(intent);// start a new actitvity and passing it some data
+				}
+
+			}
 		});
 
 
