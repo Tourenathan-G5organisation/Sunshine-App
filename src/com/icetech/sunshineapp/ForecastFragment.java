@@ -190,7 +190,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 				case COL_WEATHER_MAX_TEMP:
 				case COL_WEATHER_MIN_TEMP:
 					//We will do some formatting and possibly some conversion
-					((TextView) view).setText(Utility.formatTemperature(cursor.getDouble(columnIndex), isMetric));
+					((TextView) view).setText(Utility.formatTemperature(cursor.getDouble(columnIndex), isMetric)+"\u00B0");
 
 					return true;
 
@@ -218,15 +218,10 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 				Cursor cursor = adapter.getCursor();
 
 				if(null != cursor && cursor.moveToPosition(position)){
-					boolean isMetric = Utility.isMetric(getActivity());
-					String forecast = String.format("%s - %s - %s/%s", 
-							Utility.formatDate(cursor.getString(COL_WEATHER_DATE)),
-							cursor.getString(COL_WEATHER_SHORT_DESC),
-							Utility.formatTemperature(cursor.getDouble(COL_WEATHER_MAX_TEMP), isMetric),
-							Utility.formatTemperature(cursor.getDouble(COL_WEATHER_MIN_TEMP), isMetric));
+					
 
 					Intent intent = new Intent(getActivity(), DetailsActivity.class)
-					.putExtra(Intent.EXTRA_TEXT, forecast);
+					.putExtra(DetailsActivity.DATE_KEY, cursor.getString(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE)));
 					startActivity(intent);// start a new actitvity and passing it some data
 				}
 

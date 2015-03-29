@@ -46,6 +46,7 @@ public class MainActivity extends Activity {
     	// TODO Auto-generated method stub
     	super.onResume();
     	String location = Utility.getPreferedLocation( this );
+    	location = location.toLowerCase();
     	// update the location in our second pane using the fragment manager
     	if (location != null && !location.equals(mLocation)) {
 			
