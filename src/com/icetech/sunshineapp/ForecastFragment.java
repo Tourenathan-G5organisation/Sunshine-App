@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -36,10 +37,10 @@ import android.widget.Toast;
 public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
 	public  final String LOG_TAG = ForecastFragment.class.getSimpleName();
-	
+
 	private static final int FORECAST_LOADER = 0;
 	private String mLocation;
-	
+
 	//For the forecast view, we are showing only a subset of the stored data.
 	//Specify the coulumns needed
 	private static final String[] FORECAST_COULMNS = {
@@ -57,16 +58,16 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 		WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
 		WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING
 	};
-	
+
 	//These are column indices tied to FORECAST_COULUMN. IF FORECAST_COLUMN changes
 	//thses must change
 	public static final int COL_WEATHER_ID = 0;
 	public static final int COL_WEATHER_DATE = 1;
-	public static final int COL_SHORT_DESC = 2;
-	public static final int COL_MAX_TEMP = 3;
-	public static final int COL_MIN_TEMP = 4;
+	public static final int COL_WEATHER_SHORT_DESC = 2;
+	public static final int COL_WEATHER_MAX_TEMP = 3;
+	public static final int COL_WEATHER_MIN_TEMP = 4;
 	public static final int COL_LOCATION_SETTING = 5;
-	
+
 
 
 	public ForecastFragment() {
@@ -76,16 +77,16 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	//static ArrayAdapter<String> listData; //Adapter to be used to render the content of the list view
 
 	private static SimpleCursorAdapter listData;
-	
+
 	static String unitType = "metric" ; //this will be used to check the user choosen unit type
 
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {		
 		super.onActivityCreated(savedInstanceState);
 		getLoaderManager().initLoader(FORECAST_LOADER, null, this);
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -163,28 +164,51 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 				R.id.list_item_forcast_textview,
 				//Forecast Data
 				new ArrayList<String>());*/
-		
+
 		listData = new SimpleCursorAdapter(
 				getActivity(),
 				R.layout.list_item_forcast,
 				null, 
 				//These column name
 				new String[]{WeatherContract.WeatherEntry.COLUMN_DATE,
-			WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
-			WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-			WeatherContract.WeatherEntry.COLUMN_MIN_TEMP
-			}, 
+					WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
+					WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
+					WeatherContract.WeatherEntry.COLUMN_MIN_TEMP
+				}, 
 				new int[]{
-			R.id.list_item_date_textview,
-			R.id.list_item_forcast_textview,
-			R.id.list_item_high_textview,
-			R.id.list_item_low_textview
-		},
+					R.id.list_item_date_textview,
+					R.id.list_item_forcast_textview,
+					R.id.list_item_high_textview,
+					R.id.list_item_low_textview
+				},
 				0
-		);
-		
-		
+				);
 
+
+		listData.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
+
+			@Override
+			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+				boolean isMetric = Utility.isMetric(getActivity());
+				switch (columnIndex) {
+				case COL_WEATHER_MAX_TEMP:
+				case COL_WEATHER_MIN_TEMP:
+					//We will do some formatting and possibly some conversion
+					((TextView) view).setText(Utility.formatTemperature(cursor.getDouble(columnIndex), isMetric));
+
+					return true;
+					
+				case COL_WEATHER_DATE:
+					String dateString = cursor.getString(columnIndex);
+					((TextView) view).setText(Utility.formatDate(dateString));
+					return true;
+					
+				default:
+					break;
+				}
+				return false;
+			}
+		});
 		//Get a reference to the list view and attach adapter to it
 		ListView listview = (ListView) rootView.findViewById(R.id.listView_forecast);
 		listview.setAdapter(listData);
@@ -200,7 +224,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 				Intent intent = new Intent(getActivity(), DetailsActivity.class)
 				.putExtra(Intent.EXTRA_TEXT, forecast);
 				startActivity(intent);// start a new actitvity and passing it some data
-*/			}
+				 */			}
 		});
 
 
@@ -230,7 +254,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 		String location = pref.getString(getString(R.string.pref_location_key),
 				getString(R.string.pref_location_default));
-		
+
 		location = location.toLowerCase();
 
 		String unitType = pref.getString(getString(R.string.pref_temperature_key), getString(R.string.pref_unit_metric));
@@ -243,26 +267,26 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		//This is called when a new loader needs to be created
 		//This fragment only uses one loader, so, don't care about checking the loader id
-		
+
 		//To only show current and future date, get the string representation of today
 		//and filter the query to return weather only for date after or including today
 		//only return data after today
-		
+
 		String startDate = WeatherContract.getDbDateString(new Date());
 		Log.d(LOG_TAG, startDate);
 		//Sort order: Acending by date
 		String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
-		
+
 		mLocation = PreferenceManager.getDefaultSharedPreferences(getActivity())
 				.getString(getString(R.string.pref_location_key),
-				getString(R.string.pref_location_default));
-		
+						getString(R.string.pref_location_default));
+
 		mLocation = mLocation.toLowerCase();
 		Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(mLocation, startDate);
 		//Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocation(mLocation);
-	
+
 		Log.d(LOG_TAG, " Uri " + weatherForLocationUri.toString());
-		
+
 		//Now create and return a CursorLoader that will take care of
 		//creating a cursor loader for the data being displayed
 		return new CursorLoader(getActivity(), 
@@ -271,7 +295,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 				null, 
 				null, 
 				sortOrder);
-		
+
 	}
 
 	@Override

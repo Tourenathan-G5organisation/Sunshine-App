@@ -1,13 +1,13 @@
 package com.icetech.sunshineapp;
 
+import java.text.DateFormat;
 import java.util.Date;
-
-import com.icetech.sunshineapp.data.WeatherContract;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.text.format.DateFormat;
+
+import com.icetech.sunshineapp.data.WeatherContract;
 
 public class Utility {
 
@@ -59,7 +59,7 @@ public class Utility {
 	 */
 	 static String formatDate(String dateText){
 		Date date = WeatherContract.getDateFromDb(dateText);
-		return java.text.DateFormat.getInstance().format(date);
+		return DateFormat.getInstance().format(date);
 		
 	}
 }

@@ -182,7 +182,7 @@ public static Uri buildLocatonUri(long id){
 	}
 	
 	public static Date getDateFromDb(String dateString){
-		SimpleDateFormat dbDateFormat = new SimpleDateFormat();
+		SimpleDateFormat dbDateFormat = new SimpleDateFormat(DATE_FORMAT);
 		try {
 			return dbDateFormat.parse(dateString);
 		} catch (java.text.ParseException e) {
