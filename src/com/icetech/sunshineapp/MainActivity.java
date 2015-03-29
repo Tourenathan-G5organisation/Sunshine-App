@@ -22,16 +22,39 @@ import android.preference.PreferenceManager;
 public class MainActivity extends Activity {
 
 	private final String LOG_TAG = MainActivity.class.getSimpleName();
+	
+	private String mLocation;
+	
+	 private final String FORECASTFRAGMENT_TAG = "FFTAG";
 			
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	mLocation = Utility.getPreferedLocation(this);
+    	mLocation = mLocation.toLowerCase();
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment())
+                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
                     .commit();
         }
+    }
+    
+    @Override
+    protected void onResume() {
+    	// TODO Auto-generated method stub
+    	super.onResume();
+    	String location = Utility.getPreferedLocation( this );
+    	// update the location in our second pane using the fragment manager
+    	if (location != null && !location.equals(mLocation)) {
+			
+    		ForecastFragment fF = (ForecastFragment)getFragmentManager().findFragmentByTag(FORECASTFRAGMENT_TAG);
+    		if ( null != fF) {
+    			 fF.onLocationChanged();
+			}
+    		mLocation = location;
+		}
     }
 
     

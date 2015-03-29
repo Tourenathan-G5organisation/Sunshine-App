@@ -130,11 +130,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	};
 
 
-	@Override
-	public void onStart() {
-		super.onStart();
-		updateWeather();
-	};
+	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -321,6 +317,10 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 	}
 
-
+	// since we read the location when we create the loader, all we need to do is restart things
+	public void onLocationChanged( ) {
+		updateWeather();
+		getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
+	}
 
 }
