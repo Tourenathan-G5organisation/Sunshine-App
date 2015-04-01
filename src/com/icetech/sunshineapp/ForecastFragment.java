@@ -1,6 +1,4 @@
 package com.icetech.sunshineapp;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 import android.app.Fragment;
@@ -20,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.icetech.sunshineapp.data.WeatherContract;
@@ -37,14 +34,14 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	private String mLocation;
 
 	//For the forecast view, we are showing only a subset of the stored data.
-	//Specify the coulumns needed
+	//Specify the columns needed
 	private static final String[] FORECAST_COULMNS = {
 		//In this case the id need to be fully qualified with a table name,
 		//since the content provider joins the location and weather table in
 		// the background (both have an _id column)
 		//On one hand that is annoying, on the other hand, you can search the  weather table
 		//using the postal code (or city name) in the location table. so the
-		//convinience is worth it
+		//convenience is worth it
 
 		WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID ,
 		WeatherContract.WeatherEntry.COLUMN_DATE, 
@@ -71,7 +68,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 	
 
-	private static SimpleCursorAdapter listData;
+	private static ForecastAdapter listData;
 
 	static String unitType = "metric" ; //this will be used to check the user choosen unit type
 
@@ -131,65 +128,11 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-		//Creating an Array of string which will be used as fake data(dummy data) for simulation of the list
-
-		String[] foreCast = {
-				"Today - Sunny - 88/63",
-				"Tommorrow - Foggy - 70/46",
-				"Wed - Cloudy - 72/63",
-				"Thurs - Rainny - 64/51",
-				"Fri - Fuggy - 70/46",
-				"Sat - Sunny - 76/68",
-				"Sun - Sunny - 80/68"
-		};
-
 	
-
-		listData = new SimpleCursorAdapter(
-				getActivity(),
-				R.layout.list_item_forcast,
-				null, 
-				//These column name
-				new String[]{WeatherContract.WeatherEntry.COLUMN_DATE,
-					WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
-					WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-					WeatherContract.WeatherEntry.COLUMN_MIN_TEMP
-				}, 
-				new int[]{
-					R.id.list_item_date_textview,
-					R.id.list_item_forcast_textview,
-					R.id.list_item_high_textview,
-					R.id.list_item_low_textview
-				},
-				0
-				);
-
-
-		listData.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-
-			@Override
-			public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-				boolean isMetric = Utility.isMetric(getActivity());
-				switch (columnIndex) {
-				case COL_WEATHER_MAX_TEMP:
-				case COL_WEATHER_MIN_TEMP:
-					//We will do some formatting and possibly some conversion
-					((TextView) view).setText(Utility.formatTemperature(cursor.getDouble(columnIndex), isMetric)+"\u00B0");
-
-					return true;
-
-				case COL_WEATHER_DATE:
-					String dateString = cursor.getString(columnIndex);
-					((TextView) view).setText(Utility.formatDate(dateString));
-					return true;
-
-				default:
-					break;
-				}
-				return false;
-			}
-		});
+listData = new ForecastAdapter(getActivity(), null, 0);
+		
+		
+		
 		//Get a reference to the list view and attach adapter to it
 		ListView listview = (ListView) rootView.findViewById(R.id.listView_forecast);
 		listview.setAdapter(listData);
