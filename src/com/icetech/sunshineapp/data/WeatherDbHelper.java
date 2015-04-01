@@ -1,12 +1,11 @@
 package com.icetech.sunshineapp.data;
 
-import com.icetech.sunshineapp.data.WeatherContract.LocationEntry;
-import com.icetech.sunshineapp.data.WeatherContract.WeatherEntry;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.icetech.sunshineapp.data.WeatherContract.LocationEntry;
+import com.icetech.sunshineapp.data.WeatherContract.WeatherEntry;
 
 public class WeatherDbHelper extends SQLiteOpenHelper {
 

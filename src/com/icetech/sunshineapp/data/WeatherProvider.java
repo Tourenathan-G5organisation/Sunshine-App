@@ -1,10 +1,5 @@
 package com.icetech.sunshineapp.data;
 
-import java.util.Iterator;
-
-import com.icetech.sunshineapp.data.WeatherContract.LocationEntry;
-import com.icetech.sunshineapp.data.WeatherContract.WeatherEntry;
-
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -13,8 +8,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import android.util.AndroidException;
 import android.util.Log;
+
+import com.icetech.sunshineapp.data.WeatherContract.LocationEntry;
+import com.icetech.sunshineapp.data.WeatherContract.WeatherEntry;
 
 public class WeatherProvider extends ContentProvider {
 

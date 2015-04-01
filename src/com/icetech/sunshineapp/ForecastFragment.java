@@ -3,17 +3,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-import com.icetech.sunshineapp.R;
-import com.icetech.sunshineapp.R.string;
-import com.icetech.sunshineapp.data.WeatherContract;
-
 import android.app.Fragment;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,13 +17,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.icetech.sunshineapp.data.WeatherContract;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -74,7 +69,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 	}
 
-	//static ArrayAdapter<String> listData; //Adapter to be used to render the content of the list view
+	
 
 	private static SimpleCursorAdapter listData;
 
@@ -149,17 +144,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 				"Sun - Sunny - 80/68"
 		};
 
-		ArrayList<String> weekForeCast = new ArrayList<String>(Arrays.asList(foreCast));
-
-		/*listData = new ArrayAdapter<String>(
-				//The current context. this fragment parent activity
-				getActivity(),
-				//The ID of the list item layout
-				R.layout.list_item_forcast,
-				//the ID of the text view to populate
-				R.id.list_item_forcast_textview,
-				//Forecast Data
-				new ArrayList<String>());*/
+	
 
 		listData = new SimpleCursorAdapter(
 				getActivity(),
@@ -283,6 +268,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 						getString(R.string.pref_location_default));
 
 		mLocation = mLocation.toLowerCase();
+		
 		Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(mLocation, startDate);
 		//Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocation(mLocation);
 

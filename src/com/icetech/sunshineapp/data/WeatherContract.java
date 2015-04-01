@@ -3,11 +3,7 @@ package com.icetech.sunshineapp.data;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.http.entity.ByteArrayEntity;
-
-import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.net.ParseException;
 import android.net.Uri;
 import android.provider.BaseColumns;
 

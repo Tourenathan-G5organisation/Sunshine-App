@@ -235,6 +235,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 					
 				} catch (IOException e) {
 					Log.e(LOG_TAG, "Error", e);
+					e.printStackTrace();
 					//If the code didn't successfully get the weather data there is no point
 					//in passing it
 					return null;
