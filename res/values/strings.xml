@@ -35,5 +35,4 @@
     <!-- For labelling tomorrow's forecast [CHAR LIMIT=15] -->
     <string name="tomorrow">Tomorrow</string>
     
-  
 </resources>

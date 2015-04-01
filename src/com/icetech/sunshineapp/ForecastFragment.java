@@ -142,7 +142,7 @@ listData = new ForecastAdapter(getActivity(), null, 0);
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View v, int position,
 					long id) {
-				SimpleCursorAdapter adapter = (SimpleCursorAdapter) adapterView.getAdapter();
+				ForecastAdapter adapter = (ForecastAdapter) adapterView.getAdapter();
 				Cursor cursor = adapter.getCursor();
 
 				if(null != cursor && cursor.moveToPosition(position)){
