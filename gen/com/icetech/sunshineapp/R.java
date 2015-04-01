@@ -59,6 +59,7 @@ public final class R {
         public static final int fragment_details=0x7f030002;
         public static final int fragment_main=0x7f030003;
         public static final int list_item_forcast=0x7f030004;
+        public static final int list_item_forecast_today=0x7f030005;
     }
     public static final class menu {
         public static final int details=0x7f090000;
