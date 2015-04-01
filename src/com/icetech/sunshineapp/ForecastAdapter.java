@@ -31,6 +31,23 @@ public class ForecastAdapter extends CursorAdapter {
 
 	}
 
+
+	public static class ViewHolder {
+		public final ImageView iconView;
+		public final TextView dateView;
+		public final TextView descriptionView;
+		public final TextView highTempView;
+		public final TextView lowTempView;
+
+		public ViewHolder(View view) {
+			iconView = (ImageView) view.findViewById(R.id.list_item_icon);
+			dateView = (TextView) view.findViewById(R.id.list_item_date_textview);
+			descriptionView = (TextView) view.findViewById(R.id.list_item_forcast_textview);
+			highTempView = (TextView) view.findViewById(R.id.list_item_high_textview);
+			lowTempView = (TextView) view.findViewById(R.id.list_item_low_textview);
+		}
+	}
+
 	@Override
 	public int getItemViewType(int position) {
 
@@ -48,57 +65,64 @@ public class ForecastAdapter extends CursorAdapter {
 		//Get the view type
 		int viewType = cursor.getPosition();
 		int layoutId = -1;
-		
+
 		switch (getItemViewType(viewType)) {
 		case VIEW_TYPE_TODAY:
 			layoutId = R.layout.list_item_forecast_today;
 			break;
-			
+
 		case VIEW_TYPE_FUTURE_DAY:
 			layoutId = R.layout.list_item_forcast;
 
 			break;
 		}
 
-		return LayoutInflater.from(context).inflate(layoutId, parent, false);
+		View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
+		ViewHolder viewHolder = new ViewHolder(view);
+		view.setTag(viewHolder);
+		
+		return view;
 
 	}
 
 	@Override
 	public void bindView(View view, Context context, Cursor cursor) {
 
+		//Our viewHolder already contains references to the relevant views, so set
+		//appropriate through the view holder references instead of costly findViewById
+		ViewHolder viewHolder = (ViewHolder) view.getTag();
+		
 		//Read weather icon ID from cursor
 		int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
 
 		//USe placeholder image for now
-		ImageView iconview = (ImageView) view.findViewById(R.id.list_item_icon);
-		iconview.setImageResource(R.drawable.ic_launcher);
+	
+		viewHolder.iconView.setImageResource(R.drawable.ic_launcher);
 
 		//Read date from cursor
 		String dateString = cursor.getString(ForecastFragment.COL_WEATHER_DATE);
-		//Find text view and set formatted date on it
-		TextView dateView = (TextView) view.findViewById(R.id.list_item_date_textview);
+		
 		//USe this for now
-		dateView.setText(Utility.formatDate(dateString)); 
+		viewHolder.dateView.setText(Utility.formatDate(dateString)); 
 
 		//Read weather forecast from cursor
 		String description = cursor.getString(ForecastFragment.COL_WEATHER_SHORT_DESC);
-		//Find text view and set weather description on it
-		TextView descriptionView = (TextView) view.findViewById(R.id.list_item_forcast_textview);
-		descriptionView.setText(description);
+		
+		//Find text view and set weather description on it		
+		viewHolder.descriptionView.setText(description);
 
 		// Read user preference for metric or imperial temperature units
 		boolean isMetric = Utility.isMetric(context);
 
 		// Read high temperature from cursor
 		double high = cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
-		TextView highTempView = (TextView) view.findViewById(R.id.list_item_high_textview);
-		highTempView.setText(Utility.formatTemperature(high, isMetric)+"\u00B0");
+		
+		viewHolder.highTempView.setText(Utility.formatTemperature(high, isMetric)+"\u00B0");
 
 		// Read low temperature from cursor
 		double low = cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
-		TextView lowTempView = (TextView) view.findViewById(R.id.list_item_low_textview);
-		lowTempView.setText(Utility.formatTemperature(low, isMetric)+"\u00B0");
+		
+		viewHolder.lowTempView.setText(Utility.formatTemperature(low, isMetric)+"\u00B0");
 
 	}
 
