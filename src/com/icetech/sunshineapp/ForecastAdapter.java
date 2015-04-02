@@ -1,5 +1,7 @@
 package com.icetech.sunshineapp;
 
+import java.util.Date;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -104,7 +106,8 @@ public class ForecastAdapter extends CursorAdapter {
 		
 		//USe this for now
 		viewHolder.dateView.setText(Utility.formatDate(dateString)); 
-
+		
+		
 		//Read weather forecast from cursor
 		String description = cursor.getString(ForecastFragment.COL_WEATHER_SHORT_DESC);
 		

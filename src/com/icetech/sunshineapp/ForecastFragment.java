@@ -66,7 +66,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 	}
 
-	
+
 
 	private static ForecastAdapter listData;
 
@@ -122,17 +122,17 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	};
 
 
-	
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-	
-listData = new ForecastAdapter(getActivity(), null, 0);
-		
-		
-		
+
+		listData = new ForecastAdapter(getActivity(), null, 0);
+
+
+
 		//Get a reference to the list view and attach adapter to it
 		ListView listview = (ListView) rootView.findViewById(R.id.listView_forecast);
 		listview.setAdapter(listData);
@@ -146,10 +146,10 @@ listData = new ForecastAdapter(getActivity(), null, 0);
 				Cursor cursor = adapter.getCursor();
 
 				if(null != cursor && cursor.moveToPosition(position)){
-					
+
 
 					Intent intent = new Intent(getActivity(), DetailsActivity.class)
-					.putExtra(DetailsActivity.DATE_KEY, cursor.getString(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE)));
+					.putExtra(DetailsFragment.DATE_KEY, cursor.getString(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE)));
 					startActivity(intent);// start a new actitvity and passing it some data
 				}
 
@@ -211,7 +211,7 @@ listData = new ForecastAdapter(getActivity(), null, 0);
 						getString(R.string.pref_location_default));
 
 		mLocation = mLocation.toLowerCase();
-		
+
 		Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(mLocation, startDate);
 		//Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocation(mLocation);
 
