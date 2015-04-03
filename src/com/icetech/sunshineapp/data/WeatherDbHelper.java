@@ -11,7 +11,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
 	//if you change the Database Schema, you must increment the version
 	
-	private static final int DATABASE_VERSION = 2; //we have 2 here because this is an update of the db
+	private static final int DATABASE_VERSION = 3; //we have 2 here because this is an update of the db
 	
 	public static final String DATABASE_NAME = "weather.db";
 	
@@ -34,7 +34,7 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
 						WeatherEntry.COLUMN_LOC_KEY + " INTEGER NOT NULL, "  +
 
-						WeatherEntry.COLUMN_DATE + " TEXT NOT NULL, "    +
+						WeatherEntry.COLUMN_DATE + " INTEGER NOT NULL, "    +
 
 						WeatherEntry.COLUMN_SHORT_DESC + " TEXT NOT NULL, "  +
 
@@ -78,7 +78,12 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		
+		// This database is only a cache for online data, so its upgrade policy is
+        // to simply to discard the data and start over
+        // Note that this only fires if you change the version number for your database.
+        // It does NOT depend on the version number for your application.
+        // If you want to update the schema without wiping data, commenting out the next 2 lines
+        // should be your top priority before modifying this method.
 		db.execSQL(" DROP TABLE IF EXISTS " + LocationEntry.TABLE_NAME);
 		db.execSQL(" DROP TABLE IF EXISTS " + WeatherEntry.TABLE_NAME);
 		

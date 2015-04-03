@@ -6,6 +6,7 @@ import java.util.Date;
 import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.text.format.Time;
 
 public class WeatherContract {
 
@@ -26,6 +27,15 @@ public class WeatherContract {
 	public static final String PATH_LOCATION = "location"; 
 	
 	
+	// To make it easy to query for the exact date, we normalize all dates that go into
+    // the database to the start of the the Julian day at UTC.
+    public static long normalizeDate(long startDate) {
+        // normalize the start date to the beginning of the (UTC) day
+        Time time = new Time();
+        time.set(startDate);
+        int julianDay = Time.getJulianDay(startDate, time.gmtoff);
+        return time.setJulianDay(julianDay);
+    }
 	
 	/*Inner class that defines the table contents of the weather table */
 	
@@ -84,16 +94,18 @@ public class WeatherContract {
 			return CONTENT_URI.buildUpon().appendPath(locationSetting).build();
 		}
 		
-		public static Uri buildWeatherLocationWithStartDate(String locationSetting, String startDate){
+		public static Uri buildWeatherLocationWithStartDate(String locationSetting, long startDate){
 
+			long normalizedDate = normalizeDate(startDate);
 			return CONTENT_URI.buildUpon().appendPath(locationSetting).
-					appendQueryParameter(COLUMN_DATE, startDate).build();
+					appendQueryParameter(COLUMN_DATE, Long.toString(normalizedDate)).build();
 		}
 		
-		public static Uri buildWeatherLocationWithDate(String locationSetting, String date){
+		public static Uri buildWeatherLocationWithDate(String locationSetting, long date){
 
+			long normalizedDate = normalizeDate(date);
 			return CONTENT_URI.buildUpon().appendPath(locationSetting).
-					appendPath(date).build();
+					appendPath(Long.toString(normalizedDate)).build();
 		}
 
 		public static String getLocationSettingFromUri(Uri uri){
@@ -102,15 +114,20 @@ public class WeatherContract {
 			
 		}
 
-		public static String getDateFromUri(Uri uri){
+		public static long getDateFromUri(Uri uri){
 
-			return uri.getPathSegments().get(2);
+			return Long.parseLong(uri.getPathSegments().get(2));
 
 		}
 
-		public static String getStartDateFromUri(Uri uri){
+		public static long getStartDateFromUri(Uri uri){
 
-			return uri.getQueryParameter(COLUMN_DATE);
+			 String dateString = uri.getQueryParameter(COLUMN_DATE);
+			
+			if (null != dateString && dateString.length() > 0)
+                return Long.parseLong(dateString);
+            else
+                return 0;
 
 		}
 

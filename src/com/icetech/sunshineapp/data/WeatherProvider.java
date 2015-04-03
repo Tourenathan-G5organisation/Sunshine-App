@@ -59,18 +59,18 @@ public class WeatherProvider extends ContentProvider {
 	private Cursor getWeatherByLocation(Uri uri, String[] projection, String sortOrder){
 
 		String locationSetting = WeatherEntry.getLocationSettingFromUri(uri);
-		String startDate = WeatherEntry.getStartDateFromUri(uri);
+		long startDate = WeatherEntry.getStartDateFromUri(uri);
 
 		String[] selectionArgs;
 		String selection;
 
-		if(startDate == null){
+		if(startDate == 0){
 			selection = sLocationSettingSelection;
 			selectionArgs = new String[] {locationSetting };
 		}
 		else{
 			selection = sLocationSettingWithStartDateSelection;
-			selectionArgs = new String[] {locationSetting, startDate };
+			selectionArgs = new String[] {locationSetting, Long.toString(startDate) };
 		}
 
 		return sWeatherByLocationSettingQueryBuilder.query(
@@ -87,9 +87,9 @@ public class WeatherProvider extends ContentProvider {
 
 	private Cursor getWeatherByLocatioAndDate(Uri uri, String[] projection, String sortOrder){
 		String locationSetting = WeatherEntry.getLocationSettingFromUri(uri);
-		String Date = WeatherEntry.getDateFromUri(uri);
+		long Date = WeatherEntry.getDateFromUri(uri);
 
-		String[] selectionArgs = new String[] {locationSetting, Date};
+		String[] selectionArgs = new String[] {locationSetting, Long.toString(Date)};
 		String selection = sLocationSettingWithDaySelection;
 
 		return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),

@@ -126,7 +126,7 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		
 		super.onActivityCreated(savedInstanceState);
 		if (null != savedInstanceState && null != savedInstanceState.getString(LOCATION_KEY) ) {
 			mLocation = savedInstanceState.getString(LOCATION_KEY);
@@ -156,7 +156,7 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
+		
 		super.onSaveInstanceState(outState);
 		if (null != mLocation) {
 			outState.putString(LOCATION_KEY, mLocation);
@@ -178,23 +178,26 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		String dateString = getActivity().getIntent().getStringExtra(DATE_KEY);
+		long date = getActivity().getIntent().getLongExtra(DATE_KEY, 0);
 		//This is called when a new loader needs to be created
 		//This fragment only uses one loader, so, don't care about checking the loader id
 
+		if(date != 0){
 
-		mLocation = Utility.getPreferedLocation(getActivity());
-		mLocation = mLocation.toLowerCase();
+			mLocation = Utility.getPreferedLocation(getActivity());
+			mLocation = mLocation.toLowerCase();
 
-		Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(mLocation, dateString);
+			Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(mLocation, date);
 
-		return new CursorLoader(
-				getActivity(), 
-				weatherUri, 
-				column, 
-				null,
-				null, 
-				null);
+			return new CursorLoader(
+					getActivity(), 
+					weatherUri, 
+					column, 
+					null,
+					null, 
+					null);
+		}
+		return null;
 	}
 
 
@@ -214,9 +217,13 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 			mDescriptionView.setText(description);
 
 			// Read date from cursor and update views for day of week and date            
-			String dateText = data.getString(COL_WEATHER_DATE);
-			String dateString = Utility.formatDate(dateText);
-			mDateView.setText(dateString);
+
+			long date = data.getLong(COL_WEATHER_DATE);
+			String friendlyDateText = Utility.getDayName(getActivity(), date);
+			String dateText = Utility.getFormattedMonthDay(getActivity(), date);
+			mFriendlyDateView.setText(friendlyDateText);
+			mDateView.setText(dateText);            
+
 
 			// Read high temperature from cursor and update view
 			boolean isMetric = Utility.isMetric(getActivity());
@@ -228,27 +235,27 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 
 			// Read low temperature from cursor and update view
 			double low = data.getDouble(COL_WEATHER_MIN_TEMP);
-			String lowString = Utility.formatTemperature(high, isMetric)+SUFFIX;
+			String lowString = Utility.formatTemperature(low, isMetric)+SUFFIX;
 			mLowTempView.setText(lowString);
 
 			// Read humidity from cursor and update view
 			float humidity = data.getFloat(COL_WEATHER_HUMIDITY);
 			mHumidityView.setText(String.format("Humidity: %1.0f %%", humidity));
 
-			 // Read wind speed and direction from cursor and update view
-            float windSpeedStr = data.getFloat(COL_WEATHER_WIND_SPEED);
-            float windDirStr = data.getFloat(COL_WEATHER_DEGREES);
-            mWindView.setText(Utility.getFormattedWind(getActivity(), windSpeedStr, windDirStr));
+			// Read wind speed and direction from cursor and update view
+			float windSpeedStr = data.getFloat(COL_WEATHER_WIND_SPEED);
+			float windDirStr = data.getFloat(COL_WEATHER_DEGREES);
+			mWindView.setText(Utility.getFormattedWind(getActivity(), windSpeedStr, windDirStr));
 
 
-            // Read pressure from cursor and update view
-            float pressure = data.getFloat(COL_WEATHER_PRESSURE);
-            mPressureView.setText(String.format("Pressure: %1.0f hPa", pressure));
+			// Read pressure from cursor and update view
+			float pressure = data.getFloat(COL_WEATHER_PRESSURE);
+			mPressureView.setText(String.format("Pressure: %1.0f hPa", pressure));
 
 
 
 			//Format the string that will be used for sharing temperature infos
-			mForecastStr = String.format("%s - %s - %s/%s", dateString,
+			mForecastStr = String.format("%s - %s - %s/%s", dateText,
 					description, highString, lowString);
 		}
 
@@ -257,11 +264,9 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		// TODO Auto-generated method stub
+
 
 	}
-
-
 
 
 }

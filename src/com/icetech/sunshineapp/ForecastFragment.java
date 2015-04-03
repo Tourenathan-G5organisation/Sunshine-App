@@ -32,7 +32,13 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 	private static final int FORECAST_LOADER = 0;
 	private String mLocation;
-
+	
+	private int mPosition = ListView.INVALID_POSITION;
+	private static final String SELECTED_KEY = "selected_position";
+	
+	ListView mListview;
+	
+	
 	//For the forecast view, we are showing only a subset of the stored data.
 	//Specify the columns needed
 	private static final String[] FORECAST_COULMNS = {
@@ -75,8 +81,8 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {		
-		super.onActivityCreated(savedInstanceState);
 		getLoaderManager().initLoader(FORECAST_LOADER, null, this);
+		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
@@ -134,10 +140,10 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 
 		//Get a reference to the list view and attach adapter to it
-		ListView listview = (ListView) rootView.findViewById(R.id.listView_forecast);
-		listview.setAdapter(listData);
+		mListview = (ListView) rootView.findViewById(R.id.listView_forecast);
+		mListview.setAdapter(listData);
 
-		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View v, int position,
@@ -149,32 +155,25 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 
 					Intent intent = new Intent(getActivity(), DetailsActivity.class)
-					.putExtra(DetailsFragment.DATE_KEY, cursor.getString(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE)));
+					.putExtra(DetailsFragment.DATE_KEY, cursor.getLong(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE)));
 					startActivity(intent);// start a new actitvity and passing it some data
 				}
+				
+				mPosition = position;
 
 			}
 		});
 
-
+		if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+            // The listview probably hasn't even been populated yet.  Actually perform the
+            // swapout in onLoadFinished.
+            mPosition = savedInstanceState.getInt(SELECTED_KEY);
+        }
 
 		return rootView;
 	}
 
-	/**
-	 * this method is used passe the formated data to the apater which is to render
-	 * the content of the list view
-	 * @param str is an Array of formated weather data from the server
-	 */
-	public static void updateListAdapter( String[] str){
-		if(str != null){
-			//listData.clear();
-			for (String s : str) {
 
-				//listData.add(s); //Add the New data from the server to the list view
-			}
-		}
-	}
 
 	private void updateWeather(){
 		FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
@@ -203,7 +202,8 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 		String startDate = WeatherContract.getDbDateString(new Date());
 		Log.d(LOG_TAG, startDate);
-		//Sort order: Acending by date
+		
+		//Sort order: Ascending by date
 		String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
 
 		mLocation = PreferenceManager.getDefaultSharedPreferences(getActivity())
@@ -212,7 +212,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 		mLocation = mLocation.toLowerCase();
 
-		Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(mLocation, startDate);
+		Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(mLocation, System.currentTimeMillis());
 		//Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocation(mLocation);
 
 		Log.d(LOG_TAG, " Uri " + weatherForLocationUri.toString());
@@ -231,7 +231,12 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		Log.d(LOG_TAG, "Count data: " + data.getCount());
-		listData.swapCursor(data);
+		listData.swapCursor(data); 
+		if (mPosition != ListView.INVALID_POSITION) {
+            // If we don't need to restart the loader, and there's a desired position to restore
+            // to, do so now.
+            mListview.smoothScrollToPosition(mPosition);
+        }
 
 	}
 
@@ -246,5 +251,16 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 		updateWeather();
 		getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
 	}
+	
+	@Override
+    public void onSaveInstanceState(Bundle outState) {
+        // When tablets rotate, the currently selected list item needs to be saved.
+        // When no item is selected, mPosition will be set to Listview.INVALID_POSITION,
+        // so check for that before storing.
+        if (mPosition != ListView.INVALID_POSITION) {
+            outState.putInt(SELECTED_KEY, mPosition);
+        }
+        super.onSaveInstanceState(outState);
+    }
 
 }
