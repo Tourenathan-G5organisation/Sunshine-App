@@ -54,7 +54,8 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 		WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
 		WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
 		WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
-		WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING
+		WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING,
+		WeatherContract.WeatherEntry.COLUMN_WEATHER_ID
 	};
 
 	//These are column indices tied to FORECAST_COULUMN. IF FORECAST_COLUMN changes
@@ -65,7 +66,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	public static final int COL_WEATHER_MAX_TEMP = 3;
 	public static final int COL_WEATHER_MIN_TEMP = 4;
 	public static final int COL_LOCATION_SETTING = 5;
-
+	static final int COL_WEATHER_CONDITION_ID = 6;
 
 
 	public ForecastFragment() {

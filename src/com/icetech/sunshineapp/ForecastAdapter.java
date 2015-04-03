@@ -82,7 +82,7 @@ public class ForecastAdapter extends CursorAdapter {
 		View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
 		ViewHolder viewHolder = new ViewHolder(view);
 		view.setTag(viewHolder);
-		
+
 		return view;
 
 	}
@@ -93,26 +93,41 @@ public class ForecastAdapter extends CursorAdapter {
 		//Our viewHolder already contains references to the relevant views, so set
 		//appropriate through the view holder references instead of costly findViewById
 		ViewHolder viewHolder = (ViewHolder) view.getTag();
-		
+
 		//Read weather icon ID from cursor
 		int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
 
+		int viewType = getItemViewType(cursor.getPosition());
+		switch (viewType) {
+		case VIEW_TYPE_TODAY: {
+			// Get weather icon
+			viewHolder.iconView.setImageResource(Utility.getArtResourceForWeatherCondition(
+					cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
+			break;
+		}
+		case VIEW_TYPE_FUTURE_DAY: {
+			// Get weather icon
+			viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(
+					cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
+			break;
+		}
+		}
 		//USe placeholder image for now
-	
-		viewHolder.iconView.setImageResource(R.drawable.ic_launcher);
+
+		//viewHolder.iconView.setImageResource(R.drawable.ic_launcher);
 
 		//Read date from cursor
 		//String dateString = cursor.getString(ForecastFragment.COL_WEATHER_DATE);
-		  long dateInMillis = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
-		
-		  //USe this for now
+		long dateInMillis = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
+
+		//USe this for now
 		//viewHolder.dateView.setText(Utility.formatDate(dateString)); 
-		  // Find TextView and set formatted date on it
-	        viewHolder.dateView.setText(Utility.getFriendlyDayString(context, dateInMillis));
-		
+		// Find TextView and set formatted date on it
+		viewHolder.dateView.setText(Utility.getFriendlyDayString(context, dateInMillis));
+
 		//Read weather forecast from cursor
 		String description = cursor.getString(ForecastFragment.COL_WEATHER_SHORT_DESC);
-		
+
 		//Find text view and set weather description on it		
 		viewHolder.descriptionView.setText(description);
 
@@ -121,12 +136,12 @@ public class ForecastAdapter extends CursorAdapter {
 
 		// Read high temperature from cursor
 		double high = cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
-		
+
 		viewHolder.highTempView.setText(Utility.formatTemperature(high, isMetric)+"\u00B0");
 
 		// Read low temperature from cursor
 		double low = cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
-		
+
 		viewHolder.lowTempView.setText(Utility.formatTemperature(low, isMetric)+"\u00B0");
 
 	}
