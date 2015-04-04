@@ -209,9 +209,8 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 			// Read weather condition ID from cursor
 			int weatherId = data.getInt(COL_WEATHER_CONDITION_ID);
 
-			//Use place holder image
-			mIconView.setImageResource(R.drawable.ic_launcher);
-
+			mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
+			
 			// Read description from cursor and update view        
 			String description = data.getString(COL_WEATHER_DESC);
 			mDescriptionView.setText(description);
