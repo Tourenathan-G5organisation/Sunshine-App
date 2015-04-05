@@ -18,11 +18,6 @@ public final class R {
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
-
-         Example customization of dimensions originally defined in res/values/dimens.xml
-         (such as screen margins) for screens with more than 820dp of available width. This
-         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
-    
          */
         public static final int activity_horizontal_margin=0x7f060000;
         public static final int activity_vertical_margin=0x7f060001;
@@ -50,27 +45,28 @@ public final class R {
         public static final int ic_storm=0x7f020011;
     }
     public static final class id {
-        public static final int FrameLayout1=0x7f0b000a;
-        public static final int action_map=0x7f0b0014;
-        public static final int action_refresh=0x7f0b0013;
-        public static final int action_settings=0x7f0b0011;
-        public static final int action_share=0x7f0b0012;
-        public static final int container=0x7f0b0000;
-        public static final int detail_date_textview=0x7f0b0002;
-        public static final int detail_day_textview=0x7f0b0001;
-        public static final int detail_forcast_textview=0x7f0b0006;
-        public static final int detail_high_textview=0x7f0b0003;
-        public static final int detail_humidity_textview=0x7f0b0007;
-        public static final int detail_icon=0x7f0b0005;
-        public static final int detail_low_textview=0x7f0b0004;
-        public static final int detail_pressure_textview=0x7f0b0009;
-        public static final int detail_wind_textview=0x7f0b0008;
-        public static final int listView_forecast=0x7f0b000b;
-        public static final int list_item_date_textview=0x7f0b000d;
-        public static final int list_item_forcast_textview=0x7f0b000e;
-        public static final int list_item_high_textview=0x7f0b000f;
-        public static final int list_item_icon=0x7f0b000c;
-        public static final int list_item_low_textview=0x7f0b0010;
+        public static final int FrameLayout1=0x7f0b000b;
+        public static final int action_map=0x7f0b0015;
+        public static final int action_refresh=0x7f0b0014;
+        public static final int action_settings=0x7f0b0012;
+        public static final int action_share=0x7f0b0013;
+        public static final int detail_date_textview=0x7f0b0003;
+        public static final int detail_day_textview=0x7f0b0002;
+        public static final int detail_forcast_textview=0x7f0b0007;
+        public static final int detail_high_textview=0x7f0b0004;
+        public static final int detail_humidity_textview=0x7f0b0008;
+        public static final int detail_icon=0x7f0b0006;
+        public static final int detail_low_textview=0x7f0b0005;
+        public static final int detail_pressure_textview=0x7f0b000a;
+        public static final int detail_wind_textview=0x7f0b0009;
+        public static final int fragment_forecast=0x7f0b0001;
+        public static final int listView_forecast=0x7f0b000c;
+        public static final int list_item_date_textview=0x7f0b000e;
+        public static final int list_item_forcast_textview=0x7f0b000f;
+        public static final int list_item_high_textview=0x7f0b0010;
+        public static final int list_item_icon=0x7f0b000d;
+        public static final int list_item_low_textview=0x7f0b0011;
+        public static final int weather_detail_container=0x7f0b0000;
     }
     public static final class layout {
         public static final int activity_details=0x7f040000;

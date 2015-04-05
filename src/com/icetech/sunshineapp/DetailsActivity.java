@@ -14,7 +14,7 @@ public class DetailsActivity extends Activity {
 		setContentView(R.layout.activity_details);
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
-			.add(R.id.container, new DetailsFragment()).commit();
+			.add(R.id.weather_detail_container, new DetailsFragment()).commit();
 		}
 	}
 
