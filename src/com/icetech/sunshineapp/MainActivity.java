@@ -12,14 +12,14 @@ import android.view.MenuItem;
 
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements ForecastFragment.Callback {
 
 	private final String LOG_TAG = MainActivity.class.getSimpleName();
 
 	private String mLocation;
 
 	private boolean mTwoPane = false;
-	
+
 	private static final String DETAILFRAGMENT_TAG = "DFTAG";
 	private final String FORECASTFRAGMENT_TAG = "FFTAG";
 
@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
 		else {
 			mTwoPane = false;
 		}
-		
+
 		//        if (savedInstanceState == null) {
 		//            getFragmentManager().beginTransaction()
 		//                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
@@ -71,10 +71,10 @@ public class MainActivity extends Activity {
 			if ( null != fF) {
 				fF.onLocationChanged();
 			}
-			
+
 			DetailsFragment dF = (DetailsFragment) getFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
 			if ( null != dF) {
-				//dF.onLocationChanged();
+				dF.onLocationChanged(location);
 			}
 			mLocation = location;
 		}
@@ -130,6 +130,32 @@ public class MainActivity extends Activity {
 		}
 
 
+
+	}
+
+	@Override
+	public void onItemSelected(long date) {
+		if (mTwoPane) {
+			// In two pane mode, show the detail view of this activity
+			// by adding or replacing the detail fragment 
+			// using a fragment transaction
+
+			Bundle bundle = new Bundle();
+			bundle.putLong(DetailsFragment.DATE_KEY, date);
+
+			DetailsFragment fragment = new DetailsFragment();
+			fragment.setArguments(bundle);
+
+			getFragmentManager().beginTransaction()
+			.replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+			.commit();
+		}
+		else {
+			Intent intent = new Intent(this, DetailsActivity.class)
+					.putExtra(DetailsFragment.DATE_KEY, date);
+			startActivity(intent);// start a new activity and passing it some data
+
+		}
 
 	}
 }

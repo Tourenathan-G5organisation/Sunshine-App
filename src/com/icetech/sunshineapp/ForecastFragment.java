@@ -68,7 +68,19 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	public static final int COL_LOCATION_SETTING = 5;
 	static final int COL_WEATHER_CONDITION_ID = 6;
 
-
+/**
+ * A callback interface that all activities performing this fragment
+ * must implement. This mechanism allows activities to be notified
+ * of an item selection
+ * 
+ */
+	public interface Callback{
+		
+		/*
+		 * DetailFragmentCallback for when an item has being selected
+		 */
+		public void onItemSelected( long date);
+	}
 	public ForecastFragment() {
 
 	}
@@ -154,11 +166,11 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 				if(null != cursor && cursor.moveToPosition(position)){
 
-
-					Intent intent = new Intent(getActivity(), DetailsActivity.class)
+((Callback) getActivity()).onItemSelected(cursor.getLong(COL_WEATHER_DATE));
+					/*Intent intent = new Intent(getActivity(), DetailsActivity.class)
 					.putExtra(DetailsFragment.DATE_KEY, cursor.getLong(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE)));
-					startActivity(intent);// start a new actitvity and passing it some data
-				}
+					startActivity(intent);// start a new activity and passing it some data
+*/				}
 				
 				mPosition = position;
 

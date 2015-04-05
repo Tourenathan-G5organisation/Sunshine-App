@@ -131,11 +131,18 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 		if (null != savedInstanceState && null != savedInstanceState.getString(LOCATION_KEY) ) {
 			mLocation = savedInstanceState.getString(LOCATION_KEY);
 		}
-		Intent intent = getActivity().getIntent();
-		if (intent != null && intent.hasExtra(DetailsFragment.DATE_KEY)) {
+		Bundle arguments = getArguments();
+		
+		if (arguments != null && arguments.containsKey(DetailsFragment.DATE_KEY)) {
 			
 			getLoaderManager().initLoader(DETAIL_LOADER, null, this);
 		}
+		
+		/*Intent intent = getActivity().getIntent();
+		if (intent != null && intent.hasExtra(DetailsFragment.DATE_KEY)) {
+			
+			getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+		}*/
 		
 	}
 
@@ -173,21 +180,29 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 	public void onResume() {
 
 		super.onResume();
-		Intent intent = getActivity().getIntent();
+		Bundle arguments = getArguments();
+		if (arguments != null && arguments.containsKey(DetailsFragment.DATE_KEY) && null != mLocation && !mLocation.equals(Utility.getPreferedLocation(getActivity()).toLowerCase())) {
+
+			getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+		}
+		
+		/*Intent intent = getActivity().getIntent();
 		
 		if (intent != null && intent.hasExtra(DetailsFragment.DATE_KEY) && null != mLocation && !mLocation.equals(Utility.getPreferedLocation(getActivity()).toLowerCase())) {
 
 			getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
-		}
+		}*/
+		
 		Log.d(LOG_TAG, "location value: " + mLocation);
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		long date = getActivity().getIntent().getLongExtra(DATE_KEY, 0);
+		//long date = getActivity().getIntent().getLongExtra(DATE_KEY, 0);
 		//This is called when a new loader needs to be created
 		//This fragment only uses one loader, so, don't care about checking the loader id
 
+		long date = getArguments().getLong(DATE_KEY);
 		if(date != 0){
 
 			mLocation = Utility.getPreferedLocation(getActivity());
@@ -273,5 +288,11 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 
 	}
 
+	void onLocationChanged( String newLocation ) {
+        // replace the uri, since the location has changed
+		mLocation = Utility.getPreferedLocation(getActivity());
+            getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+        
+    }
 
 }
