@@ -131,7 +131,12 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 		if (null != savedInstanceState && null != savedInstanceState.getString(LOCATION_KEY) ) {
 			mLocation = savedInstanceState.getString(LOCATION_KEY);
 		}
-		getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+		Intent intent = getActivity().getIntent();
+		if (intent != null && intent.hasExtra(DetailsFragment.DATE_KEY)) {
+			
+			getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+		}
+		
 	}
 
 	@Override
@@ -168,8 +173,9 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 	public void onResume() {
 
 		super.onResume();
-
-		if (null != mLocation && !mLocation.equals(Utility.getPreferedLocation(getActivity()).toLowerCase())) {
+		Intent intent = getActivity().getIntent();
+		
+		if (intent != null && intent.hasExtra(DetailsFragment.DATE_KEY) && null != mLocation && !mLocation.equals(Utility.getPreferedLocation(getActivity()).toLowerCase())) {
 
 			getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
 		}
