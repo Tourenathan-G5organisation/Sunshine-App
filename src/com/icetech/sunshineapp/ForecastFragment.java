@@ -32,13 +32,13 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 	private static final int FORECAST_LOADER = 0;
 	private String mLocation;
-	
+
 	private int mPosition = ListView.INVALID_POSITION;
 	private static final String SELECTED_KEY = "selected_position";
-	
+
 	ListView mListview;
-	
-	
+
+
 	//For the forecast view, we are showing only a subset of the stored data.
 	//Specify the columns needed
 	private static final String[] FORECAST_COULMNS = {
@@ -68,14 +68,14 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	public static final int COL_LOCATION_SETTING = 5;
 	static final int COL_WEATHER_CONDITION_ID = 6;
 
-/**
- * A callback interface that all activities performing this fragment
- * must implement. This mechanism allows activities to be notified
- * of an item selection
- * 
- */
+	/**
+	 * A callback interface that all activities performing this fragment
+	 * must implement. This mechanism allows activities to be notified
+	 * of an item selection
+	 * 
+	 */
 	public interface Callback{
-		
+
 		/*
 		 * DetailFragmentCallback for when an item has being selected
 		 */
@@ -166,22 +166,19 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 				if(null != cursor && cursor.moveToPosition(position)){
 
-((Callback) getActivity()).onItemSelected(cursor.getLong(COL_WEATHER_DATE));
-					/*Intent intent = new Intent(getActivity(), DetailsActivity.class)
-					.putExtra(DetailsFragment.DATE_KEY, cursor.getLong(cursor.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_DATE)));
-					startActivity(intent);// start a new activity and passing it some data
-*/				}
-				
+					((Callback) getActivity()).onItemSelected(cursor.getLong(COL_WEATHER_DATE));
+				}
+
 				mPosition = position;
 
 			}
 		});
 
 		if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
-            // The listview probably hasn't even been populated yet.  Actually perform the
-            // swapout in onLoadFinished.
-            mPosition = savedInstanceState.getInt(SELECTED_KEY);
-        }
+			// The listview probably hasn't even been populated yet.  Actually perform the
+			// swapout in onLoadFinished.
+			mPosition = savedInstanceState.getInt(SELECTED_KEY);
+		}
 
 		return rootView;
 	}
@@ -215,7 +212,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 		String startDate = WeatherContract.getDbDateString(new Date());
 		Log.d(LOG_TAG, startDate);
-		
+
 		//Sort order: Ascending by date
 		String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
 
@@ -246,10 +243,10 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 		Log.d(LOG_TAG, "Count data: " + data.getCount());
 		listData.swapCursor(data); 
 		if (mPosition != ListView.INVALID_POSITION) {
-            // If we don't need to restart the loader, and there's a desired position to restore
-            // to, do so now.
-            mListview.smoothScrollToPosition(mPosition);
-        }
+			// If we don't need to restart the loader, and there's a desired position to restore
+			// to, do so now.
+			mListview.setSelection(mPosition);
+		}
 
 	}
 
@@ -264,16 +261,16 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 		updateWeather();
 		getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
 	}
-	
+
 	@Override
-    public void onSaveInstanceState(Bundle outState) {
-        // When tablets rotate, the currently selected list item needs to be saved.
-        // When no item is selected, mPosition will be set to Listview.INVALID_POSITION,
-        // so check for that before storing.
-        if (mPosition != ListView.INVALID_POSITION) {
-            outState.putInt(SELECTED_KEY, mPosition);
-        }
-        super.onSaveInstanceState(outState);
-    }
+	public void onSaveInstanceState(Bundle outState) {
+		// When tablets rotate, the currently selected list item needs to be saved.
+		// When no item is selected, mPosition will be set to Listview.INVALID_POSITION,
+		// so check for that before storing.
+		if (mPosition != ListView.INVALID_POSITION) {
+			outState.putInt(SELECTED_KEY, mPosition);
+		}
+		super.onSaveInstanceState(outState);
+	}
 
 }
