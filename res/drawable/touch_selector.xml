@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- When a row is being pressed but hasn't yet bieng activated (finger down) -->
+    <item android:drawable="@color/grey" android:state_pressed="true"/>
+
+    <!-- When the view is activated -->
+    <item android:drawable="@color/sunshine_light_blue" android:state_activated="true"/>
+
+    <!-- Default, Just hangin out state -->
+    <item android:drawable="@android:color/transparent"/>
+
+</selector>

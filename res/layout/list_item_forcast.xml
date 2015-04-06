@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/touch_selector"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
@@ -41,8 +42,8 @@
         <TextView
             android:id="@+id/list_item_high_textview"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:text="85"/>
+            android:layout_height="wrap_content"
+            android:text="85" />
 
         <TextView
             android:id="@+id/list_item_low_textview"
@@ -51,5 +52,4 @@
             android:text="71" />
     </LinearLayout>
 
-   
 </LinearLayout>
