@@ -77,9 +77,10 @@ public final class R {
         public static final int activity_details=0x7f040000;
         public static final int activity_main=0x7f040001;
         public static final int fragment_details=0x7f040002;
-        public static final int fragment_main=0x7f040003;
-        public static final int list_item_forcast=0x7f040004;
-        public static final int list_item_forecast_today=0x7f040005;
+        public static final int fragment_details_wide=0x7f040003;
+        public static final int fragment_main=0x7f040004;
+        public static final int list_item_forcast=0x7f040005;
+        public static final int list_item_forecast_today=0x7f040006;
     }
     public static final class menu {
         public static final int details=0x7f0b0000;
