@@ -18,6 +18,7 @@ public final class R {
     }
     public static final class color {
         public static final int grey=0x7f060000;
+        public static final int sunshine_blue=0x7f060002;
         public static final int sunshine_light_blue=0x7f060001;
     }
     public static final class dimen {
@@ -165,14 +166,22 @@ public final class R {
         public static final int tomorrow=0x7f08000e;
     }
     public static final class style {
+        /**  Action Bar Style 
+         */
+        public static final int ActionBar_Solid_Sunshine=0x7f0a0003;
+        /**  main activity action bar styles 
+         */
+        public static final int ActionBar_Solid_Sunshine_NoTitle=0x7f0a0005;
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
     
 
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
+
         
 
         Base application theme for API 11+. This theme completely replaces
@@ -184,7 +193,6 @@ public final class R {
         AppBaseTheme from BOTH res/values/styles.xml and
         res/values-v11/styles.xml on API 14+ devices.
     
- API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f0a0000;
         /**  Application theme. 
@@ -192,6 +200,9 @@ public final class R {
          */
         public static final int AppTheme=0x7f0a0001;
         public static final int ForecastListStyle=0x7f0a0002;
+        /**  Main activity Theme 
+         */
+        public static final int ForecastTheme=0x7f0a0004;
     }
     public static final class xml {
         public static final int pref_data_sync=0x7f050000;

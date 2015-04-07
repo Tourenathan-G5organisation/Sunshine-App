@@ -1,12 +1,33 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme for API 14+. This theme completely replaces
         AppBaseTheme from BOTH res/values/styles.xml and
         res/values-v11/styles.xml on API 14+ devices.
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="AppBaseTheme"  parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <!-- API 14 theme customizations can go here. -->
+         <item name="android:actionBarStyle">@style/ActionBar.Solid.Sunshine</item>
+        
+        
+    </style>
+    
+    
+    <!-- Action Bar Style -->
+    <style name="ActionBar.Solid.Sunshine" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/sunshine_blue</item>
+    </style>
+    
+    <!-- Main activity Theme -->
+    <style name="ForecastTheme" parent="AppBaseTheme">
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Sunshine.NoTitle</item>
+    </style>
+    
+     <!-- main activity action bar styles -->
+    <style name="ActionBar.Solid.Sunshine.NoTitle" parent="ActionBar.Solid.Sunshine">
+        <item name="android:displayOptions">useLogo|showHome</item>
+        <item name="android:logo">@drawable/ic_logo</item>
+        
     </style>
 
 </resources>
