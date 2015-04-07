@@ -76,6 +76,23 @@ public final class R {
     public static final class layout {
         public static final int activity_details=0x7f040000;
         public static final int activity_main=0x7f040001;
+        /** 
+    Layout alias to replace single-pane version of the layout with
+    two pane version on large screens
+    
+    For more on layout aliases, see:
+    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+
+    
+
+    Layout alias to replace single-pane version of the layout with
+    two pane version on large screens
+    
+    For more on layout aliases, see:
+    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+
+    
+         */
         public static final int fragment_details=0x7f040002;
         public static final int fragment_details_wide=0x7f040003;
         public static final int fragment_main=0x7f040004;
