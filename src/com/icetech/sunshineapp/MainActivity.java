@@ -18,10 +18,10 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 
 	private String mLocation;
 
-	private boolean mTwoPane = false;
+	private boolean mTwoPane;
 
 	private static final String DETAILFRAGMENT_TAG = "DFTAG";
-	private final String FORECASTFRAGMENT_TAG = "FFTAG";
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +51,8 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 			mTwoPane = false;
 		}
 
-		//        if (savedInstanceState == null) {
-		//            getFragmentManager().beginTransaction()
-		//                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
-		//                    .commit();
-		//        }
+		ForecastFragment fF = (ForecastFragment) getFragmentManager().findFragmentById(R.id.fragment_forecast);
+		fF.setUseTodayLaout(!mTwoPane);
 	}
 
 	@Override
@@ -67,7 +64,7 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 		// update the location in our second pane using the fragment manager
 		if (location != null && !location.equals(mLocation)) {
 
-			ForecastFragment fF = (ForecastFragment)getFragmentManager().findFragmentByTag(FORECASTFRAGMENT_TAG);
+			ForecastFragment fF = (ForecastFragment)getFragmentManager().findFragmentById(R.id.fragment_forecast);
 			if ( null != fF) {
 				fF.onLocationChanged();
 			}

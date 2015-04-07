@@ -1,6 +1,7 @@
 package com.icetech.sunshineapp;
 import java.util.Date;
 
+import android.R.bool;
 import android.app.Fragment;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
@@ -37,7 +38,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	private static final String SELECTED_KEY = "selected_position";
 
 	ListView mListview;
-
+	private boolean mUseTodayLayout;
 
 	//For the forecast view, we are showing only a subset of the stored data.
 	//Specify the columns needed
@@ -142,6 +143,13 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 
 
+	public void setUseTodayLaout( boolean useTodayLayout) {
+		mUseTodayLayout = useTodayLayout;
+		if (listData != null) {
+			listData.setUseTodayLayout(mUseTodayLayout);
+		}
+
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -149,7 +157,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 		View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
 		listData = new ForecastAdapter(getActivity(), null, 0);
-
+		listData.setUseTodayLayout(mUseTodayLayout);
 
 
 		//Get a reference to the list view and attach adapter to it
