@@ -16,6 +16,8 @@
             android:id="@+id/detail_day_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+                android:textSize="24sp"
             android:text="Tomorrow" />
 
         <!-- Text view for the Date -->
@@ -24,6 +26,9 @@
             android:id="@+id/detail_date_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+                android:textSize="20sp"
+                android:textColor="@color/grey_light"
             android:text="June 23" />
 
         <!-- Main content: High, low, art, weather state -->
@@ -45,12 +50,17 @@
                     android:id="@+id/detail_high_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                     android:fontFamily="sans-serif-light"
+                android:textSize="96sp"
                     android:text="21" />
 
                 <TextView
                    android:id="@+id/detail_low_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                     android:fontFamily="sans-serif-light"
+                 android:textColor="@color/grey_light"
+                android:textSize="48sp"
                     android:text="15" />
             </LinearLayout>
 
@@ -71,6 +81,9 @@
                     android:id="@+id/detail_forcast_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="@color/grey_light"
                     android:text="Clear" />
             </LinearLayout>
         </LinearLayout>
@@ -80,18 +93,27 @@
             android:id="@+id/detail_humidity_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+             android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:layout_marginTop="4dp"
             android:text="48%" />
 
         <TextView
             android:id="@+id/detail_wind_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+             android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:layout_marginTop="4dp"
             android:text="6Km/h NW" />
 
         <TextView
             android:id="@+id/detail_pressure_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+             android:fontFamily="sans-serif-condensed"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:layout_marginTop="4dp"
             android:text="1014" />
     </LinearLayout>
 

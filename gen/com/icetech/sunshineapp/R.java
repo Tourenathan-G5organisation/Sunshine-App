@@ -18,8 +18,10 @@ public final class R {
     }
     public static final class color {
         public static final int grey=0x7f060000;
-        public static final int sunshine_blue=0x7f060002;
-        public static final int sunshine_light_blue=0x7f060001;
+        public static final int grey_light=0x7f060001;
+        public static final int sunshine_blue=0x7f060003;
+        public static final int sunshine_light_blue=0x7f060002;
+        public static final int white=0x7f060004;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -49,6 +51,7 @@ public final class R {
         public static final int ic_snow=0x7f020010;
         public static final int ic_storm=0x7f020011;
         public static final int touch_selector=0x7f020012;
+        public static final int touch_today_selector=0x7f020013;
     }
     public static final class id {
         public static final int FrameLayout1=0x7f0c000b;

@@ -5,4 +5,4 @@
     android:layout_height="match_parent"
     tools:context="com.icetech.sunshineapp.DetailsActivity"
     tools:ignore="MergeRootFrame" />
-<!-- android:id="@+id/container" -->
+
