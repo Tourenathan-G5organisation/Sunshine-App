@@ -5,19 +5,19 @@
     android:background="@drawable/touch_selector"
     android:gravity="center_vertical"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:orientation="horizontal" 
-     android:paddingRight="@dimen/activity_horizontal_margin">
+    android:orientation="horizontal"
+    android:paddingRight="@dimen/activity_horizontal_margin" >
 
-    <FrameLayout android:layout_width="60dp" 
-        android:layout_height="wrap_content">
-        
+    <FrameLayout
+        android:layout_width="60dp"
+        android:layout_height="wrap_content" >
+
         <ImageView
-        android:id="@+id/list_item_icon"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            android:id="@+id/list_item_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
     </FrameLayout>
-    
 
     <LinearLayout
         android:layout_width="0dp"
@@ -43,8 +43,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
         android:layout_gravity="center"
+        android:layout_weight="0"
         android:orientation="vertical" >
 
         <TextView

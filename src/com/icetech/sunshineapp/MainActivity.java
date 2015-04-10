@@ -20,7 +20,7 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 
 	private boolean mTwoPane;
 
-	private static final String DETAILFRAGMENT_TAG = "DFTAG";
+	public static final String DETAILFRAGMENT_TAG = "DFTAG";
 	
 
 	@Override
@@ -53,6 +53,7 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 
 		ForecastFragment fF = (ForecastFragment) getFragmentManager().findFragmentById(R.id.fragment_forecast);
 		fF.setUseTodayLaout(!mTwoPane);
+		
 	}
 
 	@Override
@@ -75,6 +76,9 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 			}
 			mLocation = location;
 		}
+		
+		
+		
 	}
 
 
@@ -155,4 +159,11 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 		}
 
 	}
+	
+	// Tells weather the view is a two-pane or one-pane UI
+	public boolean isTwopane(){
+		return mTwoPane;
+	}
+	
+	
 }

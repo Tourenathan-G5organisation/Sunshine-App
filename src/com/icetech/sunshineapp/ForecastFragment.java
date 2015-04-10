@@ -2,6 +2,7 @@ package com.icetech.sunshineapp;
 import java.util.Date;
 
 import android.R.bool;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
@@ -39,6 +40,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 	ListView mListview;
 	private boolean mUseTodayLayout;
+	private long mSelectedDate;
 
 	//For the forecast view, we are showing only a subset of the stored data.
 	//Specify the columns needed
@@ -173,8 +175,8 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 				Cursor cursor = adapter.getCursor();
 
 				if(null != cursor && cursor.moveToPosition(position)){
-
-					((Callback) getActivity()).onItemSelected(cursor.getLong(COL_WEATHER_DATE));
+					mSelectedDate = cursor.getLong(COL_WEATHER_DATE);
+					((Callback) getActivity()).onItemSelected(mSelectedDate);
 				}
 
 				mPosition = position;
@@ -246,7 +248,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 	}
 
-	@Override
+	@SuppressLint("NewApi") @Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		Log.d(LOG_TAG, "Count data: " + data.getCount());
 		listData.swapCursor(data); 
@@ -255,7 +257,8 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 			// to, do so now.
 			mListview.setSelection(mPosition);
 		}
-
+		
+	
 	}
 
 	@Override
@@ -280,5 +283,6 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 		}
 		super.onSaveInstanceState(outState);
 	}
+	
 
 }
