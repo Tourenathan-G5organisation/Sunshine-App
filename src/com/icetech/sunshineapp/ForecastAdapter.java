@@ -1,7 +1,5 @@
 package com.icetech.sunshineapp;
 
-import java.util.Date;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -129,6 +127,9 @@ public class ForecastAdapter extends CursorAdapter {
 		//Find text view and set weather description on it		
 		viewHolder.descriptionView.setText(description);
 
+		//For Accessibility, add a content description to the icon
+		viewHolder.iconView.setContentDescription(description);
+		
 		// Read user preference for metric or imperial temperature units
 		boolean isMetric = Utility.isMetric(context);
 

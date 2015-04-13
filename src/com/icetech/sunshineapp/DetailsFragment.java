@@ -236,6 +236,9 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 			String description = data.getString(COL_WEATHER_DESC);
 			mDescriptionView.setText(description);
 
+			//For Accessibility, add a content description to the icon
+			mIconView.setContentDescription(description);
+			
 			// Read date from cursor and update views for day of week and date            
 
 			long date = data.getLong(COL_WEATHER_DATE);

@@ -284,5 +284,14 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 		super.onSaveInstanceState(outState);
 	}
 	
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		if (mPosition == ListView.INVALID_POSITION && ((MainActivity) getActivity()).isTwopane()) {
+			((MainActivity) getActivity()).initSecondPane();
+			
+		}
+	}
 
 }

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +50,7 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 		}
 		else {
 			mTwoPane = false;
+			
 		}
 
 		ForecastFragment fF = (ForecastFragment) getFragmentManager().findFragmentById(R.id.fragment_forecast);
@@ -165,5 +167,28 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 		return mTwoPane;
 	}
 	
+	//Use to init the second pane
+	public void initSecondPane(){
+		
+			Time dayTime = new Time();
+			dayTime.setToNow();
+			
+			// get the julianDate for today
+			int julianStartDay =
+			Time.getJulianDay(System.currentTimeMillis(), dayTime.gmtoff);
+			dayTime = new Time();
+			long date = dayTime.setJulianDay(julianStartDay);
+			
+			Bundle bundle = new Bundle();
+			bundle.putLong(DetailsFragment.DATE_KEY, date);
+
+			DetailsFragment fragment = new DetailsFragment();
+			fragment.setArguments(bundle);
+
+			getFragmentManager().beginTransaction()
+			.replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+			.commit();
+		
+	}
 	
 }

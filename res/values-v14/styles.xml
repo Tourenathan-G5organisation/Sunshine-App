@@ -8,6 +8,7 @@
     <style name="AppBaseTheme"  parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <!-- API 14 theme customizations can go here. -->
          <item name="android:actionBarStyle">@style/ActionBar.Solid.Sunshine</item>
+         
         
         
     </style>
