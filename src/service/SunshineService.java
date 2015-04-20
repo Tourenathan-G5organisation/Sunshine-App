@@ -13,8 +13,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -321,6 +323,16 @@ public class SunshineService extends IntentService {
 			return ContentUris.parseId(locationInsertUri);
 		}
 
+	}
+	
+	static class AlarmReciever extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 	
 	
