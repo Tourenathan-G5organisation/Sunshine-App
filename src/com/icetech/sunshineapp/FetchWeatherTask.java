@@ -156,7 +156,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
 
 
-		/* Now making the http request to get the weather data from OpenWeather */
+		/* Now making the http request to get the weather data from OpenWeatherMap */
 
 		//These two need to be declared outside the try/catch block so that
 		//they can be called in the finally block statement

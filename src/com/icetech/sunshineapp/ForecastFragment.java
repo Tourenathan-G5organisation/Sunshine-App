@@ -1,6 +1,8 @@
 package com.icetech.sunshineapp;
 import java.util.Date;
 
+import service.SunshineService;
+
 import android.R.bool;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -196,7 +198,6 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 
 	private void updateWeather(){
-		FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
 
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
@@ -205,10 +206,11 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 		location = location.toLowerCase();
 
-		String unitType = pref.getString(getString(R.string.pref_temperature_key), getString(R.string.pref_unit_metric));
+		Intent intent = new Intent(getActivity(), SunshineService.class);
 
-		//passing the town name, temperature unit type and the different unit type
-		weatherTask.execute(location, unitType, getString(R.string.pref_unit_metric), getString(R.string.pref_unit_imperial)); 
+		intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
+		getActivity().startService(intent);
+
 	}
 
 	@Override
