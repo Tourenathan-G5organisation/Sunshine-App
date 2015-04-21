@@ -5,8 +5,11 @@ import service.SunshineService;
 
 import android.R.bool;
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -206,10 +209,18 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 		location = location.toLowerCase();
 
-		Intent intent = new Intent(getActivity(), SunshineService.class);
+		Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReciever.class);
+		alarmIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
+		
+		PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
+		
+		AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+		am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+ 5000, pi);
+		
+		/*Intent intent = new Intent(getActivity(), SunshineService.class);
 
 		intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
-		getActivity().startService(intent);
+		getActivity().startService(intent);*/
 
 	}
 

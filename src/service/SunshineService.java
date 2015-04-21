@@ -325,11 +325,15 @@ public class SunshineService extends IntentService {
 
 	}
 	
-	static class AlarmReciever extends BroadcastReceiver{
+	public static class AlarmReciever extends BroadcastReceiver{
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			// TODO Auto-generated method stub
+			Intent sendIntent = new Intent(context, SunshineService.class);
+
+			sendIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,
+					intent.getStringExtra(LOCATION_QUERY_EXTRA));
+			context.startService(sendIntent);
 			
 		}
 		
