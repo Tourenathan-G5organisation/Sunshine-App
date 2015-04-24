@@ -1,5 +1,6 @@
 package com.icetech.sunshineapp;
 
+import sync.SunshineSyncAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -55,6 +56,9 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 
 		ForecastFragment fF = (ForecastFragment) getFragmentManager().findFragmentById(R.id.fragment_forecast);
 		fF.setUseTodayLaout(!mTwoPane);
+		
+		//Make sure we have gotten an account created.
+		SunshineSyncAdapter.initializeSyncAdapter(this);
 		
 	}
 

@@ -56,13 +56,7 @@
             android:exported="false"
             android:syncable="true" >
         </provider>
-
-        <service
-            android:name="service.SunshineService"
-            android:exported="false" >
-        </service>
-
-        <receiver android:name="service.SunshineService$AlarmReciever" />
+       
         
          <!-- SyncAdapter's dummy authentication service -->
          <service android:name="sync.SunshineAuthenticatorService">

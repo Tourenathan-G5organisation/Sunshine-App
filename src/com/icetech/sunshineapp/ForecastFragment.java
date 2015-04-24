@@ -1,19 +1,13 @@
 package com.icetech.sunshineapp;
 import java.util.Date;
 
-import service.SunshineService;
 import sync.SunshineSyncAdapter;
-import sync.SunshineSyncService;
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -201,26 +195,8 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 	private void updateWeather(){
 
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-		String location = pref.getString(getString(R.string.pref_location_key),
-				getString(R.string.pref_location_default));
-
-		location = location.toLowerCase();
-
 		SunshineSyncAdapter.syncImmediately(getActivity());
-		/*Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReciever.class);
-		alarmIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
-		
-		PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
-		
-		AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-		am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+ 5000, pi);
-*/		
-		/*Intent intent = new Intent(getActivity(), SunshineService.class);
 
-		intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
-		getActivity().startService(intent);*/
 
 	}
 
@@ -270,8 +246,8 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 			// to, do so now.
 			mListview.setSelection(mPosition);
 		}
-		
-	
+
+
 	}
 
 	@Override
@@ -296,14 +272,14 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 		}
 		super.onSaveInstanceState(outState);
 	}
-	
+
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
 		if (mPosition == ListView.INVALID_POSITION && ((MainActivity) getActivity()).isTwopane()) {
 			((MainActivity) getActivity()).initSecondPane();
-			
+
 		}
 	}
 
