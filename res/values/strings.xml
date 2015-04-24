@@ -39,4 +39,11 @@
     <string name="sync_account_type">sunshine.icetech.com</string>
     <string name="content_authority">com.icetech.sunshineapp.data</string>
     
+    
+    <!-- Strings related to Notification preference -->
+    <string name="pref_last_notification">last_notification</string>
+    
+     <!-- Notification Format -->
+    <string name="format_notification">Forecast: %1$s High: %2$s Low: %3$s</string>
+    
 </resources>

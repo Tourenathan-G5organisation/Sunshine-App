@@ -26,6 +26,19 @@ public class Utility {
 
 		return location;
 	}
+	
+	/**
+	 * Get the user temperature setting
+	 * @param context from which the method was called
+	 * @return temperature unit set by the user
+	 */
+	public static String getPreferedTempUnit(Context context){
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+		String tempUnit = pref.getString(context.getString(R.string.pref_temperature_key),
+				context.getString(R.string.pref_unit_metric));
+		
+		return tempUnit;
+	}
 
 	/**
 	 * Check if the temperature unit setting is Metric or Imperial
@@ -43,15 +56,14 @@ public class Utility {
 	}
 
 	//Format the temperature with respect to the units set by the user
-	public static String formatTemperature(double temperature, boolean isMetric) {
-		double temp;
-		if(isMetric){
-			temp = 9*temperature/5 + 32;
-		}
-		else {
-			temp = temperature;
-		}
-		return String.format("%.0f", temp);
+	public static String formatTemperature(Context context, double temperature) {
+		
+		
+		if (!isMetric(context)) {
+            temperature = (temperature * 1.8) + 32;
+        }
+		
+		return String.format("%.0f", temperature);
 	}
 
 	/**

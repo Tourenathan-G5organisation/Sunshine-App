@@ -262,6 +262,11 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 		getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
 	}
 
+	//just reload the loader when the temperature unit changes
+	public void ontempUnitChanged (){
+		getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
+	}
+	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		// When tablets rotate, the currently selected list item needs to be saved.
@@ -275,7 +280,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 	@Override
 	public void onResume() {
-		// TODO Auto-generated method stub
+		
 		super.onResume();
 		if (mPosition == ListView.INVALID_POSITION && ((MainActivity) getActivity()).isTwopane()) {
 			((MainActivity) getActivity()).initSecondPane();

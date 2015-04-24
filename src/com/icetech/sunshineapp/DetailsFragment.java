@@ -252,13 +252,13 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
 			boolean isMetric = Utility.isMetric(getActivity());
 
 			double high = data.getDouble(COL_WEATHER_MAX_TEMP);
-			String highString = Utility.formatTemperature(high, isMetric)+SUFFIX;
+			String highString = Utility.formatTemperature(getActivity(), high)+SUFFIX;
 
 			mHighTempView.setText(highString);
 
 			// Read low temperature from cursor and update view
 			double low = data.getDouble(COL_WEATHER_MIN_TEMP);
-			String lowString = Utility.formatTemperature(low, isMetric)+SUFFIX;
+			String lowString = Utility.formatTemperature(getActivity(), low)+SUFFIX;
 			mLowTempView.setText(lowString);
 
 			// Read humidity from cursor and update view

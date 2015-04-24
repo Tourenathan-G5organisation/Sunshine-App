@@ -19,16 +19,19 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 	private final String LOG_TAG = MainActivity.class.getSimpleName();
 
 	private String mLocation;
+	private String mTempUnit;
 
 	private boolean mTwoPane;
 
 	public static final String DETAILFRAGMENT_TAG = "DFTAG";
-	
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		mLocation = Utility.getPreferedLocation(this);
 		mLocation = mLocation.toLowerCase();
+
+		mTempUnit = Utility.getPreferedTempUnit(this);
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -51,15 +54,15 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 		}
 		else {
 			mTwoPane = false;
-			
+
 		}
 
 		ForecastFragment fF = (ForecastFragment) getFragmentManager().findFragmentById(R.id.fragment_forecast);
 		fF.setUseTodayLaout(!mTwoPane);
-		
+
 		//Make sure we have gotten an account created.
 		SunshineSyncAdapter.initializeSyncAdapter(this);
-		
+
 	}
 
 	@Override
@@ -68,6 +71,9 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 		super.onResume();
 		String location = Utility.getPreferedLocation( this );
 		location = location.toLowerCase();
+
+		String tempUnits = Utility.getPreferedTempUnit(this);
+
 		// update the location in our second pane using the fragment manager
 		if (location != null && !location.equals(mLocation)) {
 
@@ -82,9 +88,16 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 			}
 			mLocation = location;
 		}
-		
-		
-		
+		else if(tempUnits != null && !tempUnits.equals(mTempUnit)){
+			ForecastFragment fF = (ForecastFragment)getFragmentManager().findFragmentById(R.id.fragment_forecast);
+			if ( null != fF) {
+				fF.ontempUnitChanged();
+			}
+			mTempUnit = tempUnits;
+		}
+
+
+
 	}
 
 
@@ -159,40 +172,40 @@ public class MainActivity extends Activity implements ForecastFragment.Callback 
 		}
 		else {
 			Intent intent = new Intent(this, DetailsActivity.class)
-					.putExtra(DetailsFragment.DATE_KEY, date);
+			.putExtra(DetailsFragment.DATE_KEY, date);
 			startActivity(intent);// start a new activity and passing it some data
 
 		}
 
 	}
-	
+
 	// Tells weather the view is a two-pane or one-pane UI
 	public boolean isTwopane(){
 		return mTwoPane;
 	}
-	
+
 	//Use to init the second pane
 	public void initSecondPane(){
-		
-			Time dayTime = new Time();
-			dayTime.setToNow();
-			
-			// get the julianDate for today
-			int julianStartDay =
-			Time.getJulianDay(System.currentTimeMillis(), dayTime.gmtoff);
-			dayTime = new Time();
-			long date = dayTime.setJulianDay(julianStartDay);
-			
-			Bundle bundle = new Bundle();
-			bundle.putLong(DetailsFragment.DATE_KEY, date);
 
-			DetailsFragment fragment = new DetailsFragment();
-			fragment.setArguments(bundle);
+		Time dayTime = new Time();
+		dayTime.setToNow();
 
-			getFragmentManager().beginTransaction()
-			.replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
-			.commit();
-		
+		// get the julianDate for today
+		int julianStartDay =
+				Time.getJulianDay(System.currentTimeMillis(), dayTime.gmtoff);
+		dayTime = new Time();
+		long date = dayTime.setJulianDay(julianStartDay);
+
+		Bundle bundle = new Bundle();
+		bundle.putLong(DetailsFragment.DATE_KEY, date);
+
+		DetailsFragment fragment = new DetailsFragment();
+		fragment.setArguments(bundle);
+
+		getFragmentManager().beginTransaction()
+		.replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+		.commit();
+
 	}
-	
+
 }

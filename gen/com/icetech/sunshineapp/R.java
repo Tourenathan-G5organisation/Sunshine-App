@@ -118,19 +118,25 @@ public final class R {
         public static final int action_share=0x7f08000c;
         public static final int app_name=0x7f080000;
         public static final int content_authority=0x7f080010;
+        /**  Notification Format 
+         */
+        public static final int format_notification=0x7f080012;
         public static final int hello_world=0x7f080001;
-        public static final int pref_default_display_name=0x7f080016;
-        public static final int pref_description_social_recommendations=0x7f080014;
+        public static final int pref_default_display_name=0x7f080018;
+        public static final int pref_description_social_recommendations=0x7f080016;
         /**  Example settings for Data & Sync 
          */
-        public static final int pref_header_data_sync=0x7f080018;
+        public static final int pref_header_data_sync=0x7f08001a;
         /**  Strings related to Settings 
  Example General settings 
          */
-        public static final int pref_header_general=0x7f080012;
+        public static final int pref_header_general=0x7f080014;
         /**  Example settings for Notifications 
          */
-        public static final int pref_header_notifications=0x7f08001b;
+        public static final int pref_header_notifications=0x7f08001d;
+        /**  Strings related to Notification preference 
+         */
+        public static final int pref_last_notification=0x7f080011;
         /**  Default city name for location preference [CHAR LIMIT=NONE] 
          */
         public static final int pref_location_default=0x7f080007;
@@ -140,18 +146,18 @@ public final class R {
         /**  Label for location preference 
          */
         public static final int pref_location_label=0x7f080005;
-        public static final int pref_ringtone_silent=0x7f08001e;
-        public static final int pref_temp_unit_label=0x7f080017;
+        public static final int pref_ringtone_silent=0x7f080020;
+        public static final int pref_temp_unit_label=0x7f080019;
         /**  key name for storring temperature in shared prefernces file 
          */
         public static final int pref_temperature_key=0x7f080008;
-        public static final int pref_title_display_name=0x7f080015;
-        public static final int pref_title_new_message_notifications=0x7f08001c;
-        public static final int pref_title_ringtone=0x7f08001d;
-        public static final int pref_title_social_recommendations=0x7f080013;
-        public static final int pref_title_sync_frequency=0x7f080019;
-        public static final int pref_title_system_sync_settings=0x7f08001a;
-        public static final int pref_title_vibrate=0x7f08001f;
+        public static final int pref_title_display_name=0x7f080017;
+        public static final int pref_title_new_message_notifications=0x7f08001e;
+        public static final int pref_title_ringtone=0x7f08001f;
+        public static final int pref_title_social_recommendations=0x7f080015;
+        public static final int pref_title_sync_frequency=0x7f08001b;
+        public static final int pref_title_system_sync_settings=0x7f08001c;
+        public static final int pref_title_vibrate=0x7f080021;
         /**  Imperial Unit type value for storring temperature 
          */
         public static final int pref_unit_imperial=0x7f08000a;
@@ -164,7 +170,7 @@ public final class R {
         /**  Title for the second Actitvity 
          */
         public static final int title_activity_details=0x7f080004;
-        public static final int title_activity_settings=0x7f080011;
+        public static final int title_activity_settings=0x7f080013;
         /**  Language-specific constants 
          */
         public static final int today=0x7f08000d;
