@@ -35,4 +35,8 @@
     <!-- For labelling tomorrow's forecast [CHAR LIMIT=15] -->
     <string name="tomorrow">Tomorrow</string>
     
+     <!-- SyncAdapter related -->
+    <string name="sync_account_type">sunshine.icetech.com</string>
+    <string name="content_authority">com.icetech.sunshineapp.data</string>
+    
 </resources>

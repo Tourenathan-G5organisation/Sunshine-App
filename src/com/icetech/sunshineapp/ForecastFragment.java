@@ -2,8 +2,8 @@ package com.icetech.sunshineapp;
 import java.util.Date;
 
 import service.SunshineService;
-
-import android.R.bool;
+import sync.SunshineSyncAdapter;
+import sync.SunshineSyncService;
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Fragment;
@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.icetech.sunshineapp.data.WeatherContract;
@@ -209,14 +208,15 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 		location = location.toLowerCase();
 
-		Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReciever.class);
+		SunshineSyncAdapter.syncImmediately(getActivity());
+		/*Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReciever.class);
 		alarmIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
 		
 		PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
 		
 		AlarmManager am = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 		am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+ 5000, pi);
-		
+*/		
 		/*Intent intent = new Intent(getActivity(), SunshineService.class);
 
 		intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
