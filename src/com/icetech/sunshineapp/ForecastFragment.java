@@ -8,7 +8,9 @@ import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -56,7 +58,9 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 		WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
 		WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
 		WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING,
-		WeatherContract.WeatherEntry.COLUMN_WEATHER_ID
+		WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
+		WeatherContract.LocationEntry.COLUMN_COORD_LAT,
+		WeatherContract.LocationEntry.COLUMN_COORD_LONG
 	};
 
 	//These are column indices tied to FORECAST_COULUMN. IF FORECAST_COLUMN changes
@@ -68,6 +72,8 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	public static final int COL_WEATHER_MIN_TEMP = 4;
 	public static final int COL_LOCATION_SETTING = 5;
 	static final int COL_WEATHER_CONDITION_ID = 6;
+	public static final int COL_COORD_LAT = 7;
+	public static final int COL_COORD_LONG = 8;
 
 	/**
 	 * A callback interface that all activities performing this fragment
@@ -132,10 +138,16 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 			break;
 
-		case R.id.action_refresh:
+		case R.id.action_map:			
+				//make a call to the map application
+				onPreferredLocationInMap();	
+			
+			break;
+			
+		/*case R.id.action_refresh:
 			updateWeather();
 
-			break;
+			break;*/
 
 		}
 		return super.onOptionsItemSelected(item);
@@ -266,7 +278,7 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 	public void ontempUnitChanged (){
 		getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		// When tablets rotate, the currently selected list item needs to be saved.
@@ -280,12 +292,49 @@ public class ForecastFragment extends Fragment implements LoaderCallbacks<Cursor
 
 	@Override
 	public void onResume() {
-		
+
 		super.onResume();
 		if (mPosition == ListView.INVALID_POSITION && ((MainActivity) getActivity()).isTwopane()) {
 			((MainActivity) getActivity()).initSecondPane();
 
 		}
+	}
+
+
+	/*This method is use to call the map application to display the 
+	user preferred location on the map
+	 */
+
+	private void onPreferredLocationInMap(){
+		if(null != listData){
+			Cursor c = listData.getCursor();
+
+			if( null != c ){
+				c.moveToPosition(0);
+
+				String posLat = c.getString(COL_COORD_LAT);
+				String posLong = c.getString(COL_COORD_LONG);
+
+				//To get more about the data format for implicit intent
+				//visit developer.android.com and search for common intent
+
+				Uri geoLocation = Uri.parse("geo:" + posLat + "," + posLong);
+
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(geoLocation);
+
+				if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+					startActivity(intent);
+				} else {
+					Log.d(LOG_TAG, "Couldn't call " + geoLocation.toString() + ", no receiving apps installed!");
+				}
+			}
+		}
+
+
+
+
+
 	}
 
 }

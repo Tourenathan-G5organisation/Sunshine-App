@@ -55,8 +55,7 @@ public final class R {
     }
     public static final class id {
         public static final int FrameLayout1=0x7f0c000b;
-        public static final int action_map=0x7f0c0015;
-        public static final int action_refresh=0x7f0c0014;
+        public static final int action_map=0x7f0c0014;
         public static final int action_settings=0x7f0c0012;
         public static final int action_share=0x7f0c0013;
         public static final int detail_date_textview=0x7f0c0003;

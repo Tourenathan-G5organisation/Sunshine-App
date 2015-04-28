@@ -2,12 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.icetech.sunshineapp.MainActivity" >
 
-    <item
-        android:id="@+id/action_map"
-        android:icon="@android:drawable/ic_menu_mapmode"
+     <item
+        android:id="@+id/action_settings"
         android:orderInCategory="101"
-        android:showAsAction="ifRoom"
-        android:title="@string/action_map">
-    </item>
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
 
 </menu>
