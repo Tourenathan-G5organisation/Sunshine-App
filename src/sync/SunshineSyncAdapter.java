@@ -293,6 +293,12 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
 
 				Log.d(LOG_TAG, "FetchweatherTask complete. " + cVVector.size() + " inserted");
 
+				// delete old data so we don't build up an endless history
+				getContext().getContentResolver().delete(WeatherContract.WeatherEntry.CONTENT_URI,
+						WeatherContract.WeatherEntry.COLUMN_DATE + " <= ?",
+						new String[] {Long.toString(dayTime.setJulianDay(julianStartDay-1))});
+				
+				notifyWeather();
 			}
 
 
